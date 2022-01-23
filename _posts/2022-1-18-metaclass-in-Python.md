@@ -6,21 +6,20 @@ tags:
 categories: Python
 ---
 
-## 背景
+# 背景
 
 最近在实习看代码的时候接触了metaclass相关的知识，查阅了一些资料才感觉有一点点理解，故作此记录。
 P.S. 感觉这个特性真99%的情况都不会用到hhh。
 
-## 关于Metaclass
+# 关于Metaclass
 
-
-### ```__init__```和```__new__```的区别  
+## ```__init__```和```__new__```的区别  
 
 首先，```__new__（cls, *args, **kwargs)```是类的静态方法，在类实例化的时候调用，返回创建的实例。  
 而```__init__(self, *args, **kwargs)```是类的实例方法，其参数```self```实际上是```__new__```的返回值。
 两个函数中的参数，```cls```一般指类本身，```self```一般指实例化之后的类对象。
 
-### Python的对象(object)
+## Python的对象(object)
 
 一般来说，在使用Python时遵循定义类——实例化对象这样的范式。如
 
@@ -34,7 +33,7 @@ P.S. 感觉这个特性真99%的情况都不会用到hhh。
 但实际上在Python中，类本身也是一个对象，因此可以将其作为函数传参、拷贝、赋值等。如下为类本身与类实例对象调用```type```函数的输出结果。
 ![object_type](2022-1-18-metaclass-in-Python/1.png)
 
-### 动态创建类
+## 动态创建类
 
 静态的创建类是指预先的在代码中以```class```的形式定义类，而事实上，```type```函数可以动态的创建Python类。调用方法为```type(name, base, attr)```，各个参数的含义为
 * ```name```：类名
@@ -44,11 +43,9 @@ P.S. 感觉这个特性真99%的情况都不会用到hhh。
 下图为通过```type```定义的一个例子
 ![type_example](2022-1-18-metaclass-in-Python/2.png)
 
-
-### Metaclass
+## Metaclass
 
 实际上，在我们用```class```定义类的时候，本质上可以理解为调用了```type```函数。```type```函数就是最基本的metaclass，其可以理解为类的类。
-
 我们也可以自己定义一个Metaclass，从而自定义我们的类的生成过程。例如下面的metaclass继承了```type```，并将其所定义的类的属性名改为大写。
 
  ```Python
@@ -69,15 +66,13 @@ class Foo(object, metaclass=MyMetaclass, kwarg1=value1):
     ...
  ```
 
-## Metaclass的作用
+# Metaclass的作用
 
-几个例子：
-
-#### 1.将类的属性名全部改为大写
+## 将类的属性名全部改为大写
 
 如上所示
 
-#### 2.记录每个类被定义的顺序
+## 记录每个类被定义的顺序
 
 ```Python
 class MyMeta(type):
@@ -93,7 +88,7 @@ class MyType(metaclass=MyMeta):
     pass
 ```
 
-#### 3.模块化管理
+## 模块化管理
 
 在metaclass中维护一个字典，包含类名和类的对象
 
@@ -140,8 +135,10 @@ print(o3)
 
 思考：这一模式是否可以通过注册器代替？
 
-## 总结
+# 总结
+
 其实感觉还是没有完全理解真正好用的地方，一些目的好像可以通过其他方式更快的实现，希望在后面的使用过程中可以慢慢理解。
 
-## 参考
+# 参考
+
 * [what-are-metaclasses-in-python](https://stackoverflow.com/questions/100003/what-are-metaclasses-in-python)
