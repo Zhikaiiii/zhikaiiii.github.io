@@ -1,10 +1,15 @@
 ---
 title: Metaclass in Python
+mathjax: false
 date: 2022-01-18 20:19:52
 tags:
     - Python
 categories: Python
 ---
+<style> h1 { border-bottom: none } </style>
+<style> h2 { border-bottom: none } </style>
+
+<!-- more -->
 
 # 背景
 

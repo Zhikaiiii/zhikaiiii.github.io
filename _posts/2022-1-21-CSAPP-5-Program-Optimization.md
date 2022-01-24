@@ -1,18 +1,24 @@
 ---
 title: 'CSAPP(5): Program Optimization'
 date: 2022-01-21 10:21:47
+mathjax: true
 tags: 
     - CSAPP
     - 课程学习
 categories: 课程学习
 ---
+<style> h1 { border-bottom: none } </style>
+<style> h2 { border-bottom: none } </style>
+
+<!-- more -->
 
 # 背景
 
 本篇内容针对于CSAPP Chapter5的内容整理，主要参考了b站上CMU的网课。
-程序优化本身是可以由编译器完成的，如在`gcc -O1`但是编译器进行的优化主要有以下局限性：
-* 内存别名的引用
-考虑如下两段代码
+程序优化本身是可以由编译器完成的，如`gcc -O1`。但是编译器进行的优化主要有以下局限性：
+
+* 内存别名的引用，考虑如下两段代码
+
 ```C
 // code 1
 void fun1(long *xp, long *yp){
@@ -28,6 +34,7 @@ void func2(long *xp, long *yp){
 }
 ```
 如果`xp`与`yp`相同，此时两种代码的执行结果是不同的。因此编译器不会进行这样的优化。
+
 * 编译器不考虑程序之间的相互依赖，如调用系统函数时，编译器可能无法判断调用的函数可能造成后果。
 
 # 程序优化
@@ -111,8 +118,10 @@ void combine1(vec_ptr v, data_t *dest){
 ### 2. 循环展开
 
 下面为2x1循环展开的版本：
+
 * 减少循环和条件分支的开销
 * 并没有改变OP操作的顺序执行性
+
 ```C
 // 对向量的所有元素做某个op操作(+或*)
 void combine2(vec_ptr v, data_t *dest){
