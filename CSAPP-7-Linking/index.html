@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"hitsresultsfoundin{time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="h1 { border-bottom: none }   h2 { border-bottom: none }">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAPP(7): Linking">
+<meta property="og:url" content="http://example.com/CSAPP-7-Linking/index.html">
+<meta property="og:site_name" content="Zhikaiiii&#39;s Page">
+<meta property="og:description" content="h1 { border-bottom: none }   h2 { border-bottom: none }">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/CSAPP-7-Linking/1.png">
+<meta property="og:image" content="http://example.com/CSAPP-7-Linking/2.png">
+<meta property="og:image" content="http://example.com/CSAPP-7-Linking/3.png">
+<meta property="og:image" content="http://example.com/CSAPP-7-Linking/4.png">
+<meta property="og:image" content="http://example.com/CSAPP-7-Linking/5.png">
+<meta property="article:published_time" content="2022-01-27T08:14:23.000Z">
+<meta property="article:modified_time" content="2022-01-29T06:45:30.307Z">
+<meta property="article:author" content="Zhikai">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/CSAPP-7-Linking/1.png">
+
+<link rel="canonical" href="http://example.com/CSAPP-7-Linking/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CSAPP(7): Linking | Zhikaiiii's Page</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Zhikaiiii's Page</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">C.O.Y.G</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/CSAPP-7-Linking/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Zhikai">
+      <meta itemprop="description" content="Have fun">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhikaiiii's Page">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CSAPP(7): Linking
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-01-27 16:14:23" itemprop="dateCreated datePublished" datetime="2022-01-27T16:14:23+08:00">2022-01-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-29 14:45:30" itemprop="dateModified" datetime="2022-01-29T14:45:30+08:00">2022-01-29</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <style> h1 { border-bottom: none } </style>
+<style> h2 { border-bottom: none } </style>
+<span id="more"></span>
+<h1 id="&#x80CC;&#x666F;">&#x80CC;&#x666F;</h1>
+<p>&#x672C;&#x8282;&#x662F;&#x5BF9;CSAPP Chapter7&#x5185;&#x5BB9;&#x7684;&#x6574;&#x7406;&#xFF0C;&#x540C;&#x6837;&#x53C2;&#x8003;b&#x7AD9;&#x8BFE;&#x7A0B;&#x4E0E;&#x4E66;&#x672C;&#x3002; &#x94FE;&#x63A5;&#x7684;&#x4F5C;&#x7528;&#x5305;&#x62EC;&#xFF1A;</p>
+<ul>
+<li>&#x6A21;&#x5757;&#x5316;&#x7BA1;&#x7406;&#xFF1A;&#x5C06;&#x7A0B;&#x5E8F;&#x89E3;&#x8026;&#x4E3A;&#x5C0F;&#x7684;&#x6E90;&#x6587;&#x4EF6;&#xFF0C;&#x6BCF;&#x90E8;&#x5206;&#x5404;&#x53F8;&#x5176;&#x804C;&#x3002;</li>
+<li>&#x6548;&#x7387;&#xFF1A;&#x4E00;&#x65B9;&#x9762;&#xFF0C;&#x4FEE;&#x6539;&#x4E00;&#x4E2A;&#x6E90;&#x6587;&#x4EF6;&#x53EA;&#x9700;&#x5BF9;&#x5176;&#x7F16;&#x8BD1;&#x540E;&#x91CD;&#x65B0;&#x94FE;&#x63A5;&#x5373;&#x53EF;&#xFF0C;&#x65E0;&#x9700;&#x91CD;&#x65B0;&#x7F16;&#x8BD1;&#x5176;&#x4ED6;&#x6E90;&#x6587;&#x4EF6;&#xFF1B;&#x53E6;&#x4E00;&#x65B9;&#x9762;&#xFF0C;&#x4E0D;&#x540C;&#x7684;&#x7A0B;&#x5E8F;&#x4E4B;&#x95F4;&#x53EF;&#x4EE5;&#x5171;&#x4EAB;&#x540C;&#x6837;&#x7684;&#x4EE3;&#x7801;&#x3002;</li>
+</ul>
+<h2 id="&#x7F16;&#x8BD1;&#x8FC7;&#x7A0B;">&#x7F16;&#x8BD1;&#x8FC7;&#x7A0B;</h2>
+<p>&#x5BF9;&#x4E8E;&#x6211;&#x4EEC;&#x5199;&#x7684;&#x4EE3;&#x7801;&#xFF0C;&#x5C06;&#x5176;&#x8F6C;&#x6210;&#x53EF;&#x6267;&#x884C;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x4E3B;&#x8981;&#x5305;&#x542B;&#x4E86;&#x4EE5;&#x4E0B;&#x51E0;&#x6B65;&#xFF1A;</p>
+<ul>
+<li>&#x9884;&#x5904;&#x7406;: <code>x.c</code>&#x6587;&#x4EF6;&#x8F6C;&#x4E3A;<code>x.i</code>&#xFF0C;&#x5982;&#x8BFB;&#x53D6;&#x5934;&#x6587;&#x4EF6;&#x4E2D;&#x7684;&#x76F8;&#x5173;&#x5185;&#x5BB9;&#x7B49;</li>
+<li>&#x7F16;&#x8BD1;&#xFF1A;&#x5C06;<code>x.i</code>&#x6587;&#x4EF6;&#x7F16;&#x8BD1;&#x4E3A;<code>x.s</code>&#xFF0C;&#x4E3A;&#x4E00;&#x4E2A;&#x6C47;&#x7F16;&#x7A0B;&#x5E8F;&#x8BED;&#x8A00;</li>
+<li>&#x6C47;&#x7F16;&#xFF1A;&#x5C06;&#x6C47;&#x7F16;&#x8BED;&#x8A00;&#x7FFB;&#x8BD1;&#x4E3A;&#x673A;&#x5668;&#x8BED;&#x8A00;&#x6307;&#x4EE4;(&#x4E8C;&#x8FDB;&#x5236;)&#xFF0C;&#x5F97;&#x5230;&#x53EF;&#x91CD;&#x5B9A;&#x4F4D;&#x76EE;&#x6807;&#x7A0B;&#x5E8F;(<code>x.o</code>)&#x3002;</li>
+<li>&#x94FE;&#x63A5;: &#x5C06;&#x5404;&#x4E2A;&#x4EE3;&#x7801;&#x6587;&#x4EF6;&#x7EC4;&#x5408;&#x5F97;&#x5230;&#x6700;&#x540E;&#x7684;&#x53EF;&#x6267;&#x884C;&#x7A0B;&#x5E8F;&#x6587;&#x4EF6;&#x3002;</li>
+</ul>
+<p>IDE&#x5F80;&#x5F80;&#x5E2E;&#x52A9;&#x6211;&#x4EEC;&#x5B8C;&#x6210;&#x4E86;&#x4E0A;&#x8FF0;&#x7684;&#x6240;&#x6709;&#x6B65;&#x9AA4;&#xFF0C;&#x5F97;&#x5230;&#x6700;&#x540E;&#x7684;&#x7A0B;&#x5E8F;&#x3002;</p>
+<h2 id="c&#x8BED;&#x8A00;&#x590D;&#x4E60;&#x76F8;&#x5173;">C&#x8BED;&#x8A00;&#x590D;&#x4E60;&#x76F8;&#x5173;</h2>
+<h3 id="static&#x5173;&#x952E;&#x5B57;&#x548C;&#x5168;&#x5C40;&#x53D8;&#x91CF;"><code>static</code>&#x5173;&#x952E;&#x5B57;&#x548C;&#x5168;&#x5C40;&#x53D8;&#x91CF;</h3>
+<ul>
+<li>&#x5728;C&#x8BED;&#x8A00;&#x4E2D;&#xFF0C;<code>static</code>&#x5173;&#x952E;&#x5B57;&#x65E2;&#x53EF;&#x4EE5;&#x7528;&#x4E8E;&#x4FEE;&#x9970;&#x53D8;&#x91CF;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x7528;&#x4E8E;&#x4FEE;&#x9970;&#x51FD;&#x6570;&#x3002;</li>
+<li>&#x666E;&#x901A;&#x7684;&#x5C40;&#x90E8;&#x53D8;&#x91CF;&#x4F4D;&#x4E8E;&#x6808;&#x7A7A;&#x95F4;&#x4E2D;&#xFF0C;&#x4F7F;&#x7528;&#x5B8C;&#x6BD5;&#x540E;&#x7ACB;&#x5373;&#x91CA;&#x653E;&#x3002;&#x800C;&#x9759;&#x6001;&#x53D8;&#x91CF;&#x548C;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#x76F8;&#x540C;&#xFF0C;&#x662F;&#x9759;&#x6001;&#x5B58;&#x50A8;&#x65B9;&#x5F0F;&#x3002;</li>
+<li>&#x9759;&#x6001;&#x53D8;&#x91CF;&#x7684;&#x4F5C;&#x7528;&#x57DF;&#x53EA;&#x4F4D;&#x4E8E;&#x8BE5;&#x6587;&#x4EF6;/&#x8BE5;&#x51FD;&#x6570;&#x4E2D;&#xFF0C;&#x4F46;&#x662F;&#x5177;&#x6709;&#x6301;&#x4E45;&#x6027;&#x3002;</li>
+</ul>
+<h3 id="&#x5B9A;&#x4E49;&#x548C;&#x5F15;&#x7528;">&#x5B9A;&#x4E49;&#x548C;&#x5F15;&#x7528;</h3>
+<p>&#x5728;C&#x8BED;&#x8A00;&#x4E2D;&#xFF0C;&#x53D8;&#x91CF;&#x6216;&#x8005;&#x51FD;&#x6570;&#x90FD;&#x6709;&#x5B9A;&#x4E49;(define)&#x548C;&#x5F15;&#x7528;(reference)&#x8FC7;&#x7A0B;&#x3002;</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">()</span></span>{} <span class="comment">//&#x51FD;&#x6570;&#x5B9A;&#x4E49;</span></span><br><span class="line"></span><br><span class="line">swap(); <span class="comment">//&#x51FD;&#x6570;&#x5F15;&#x7528;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *xp = &amp;x; <span class="comment">//&#x5B9A;&#x4E49;xp&#xFF0C;&#x5E76;&#x5F15;&#x7528;x</span></span><br></pre></td></tr></table></figure>
+<h1 id="&#x9759;&#x6001;&#x94FE;&#x63A5;">&#x9759;&#x6001;&#x94FE;&#x63A5;</h1>
+<p>&#x9759;&#x6001;&#x94FE;&#x63A5;&#x4E3B;&#x8981;&#x5305;&#x542B;&#x4E24;&#x4E2A;&#x6B65;&#x9AA4;&#xFF1A;&#x7B26;&#x53F7;&#x89E3;&#x6790;&#x4E0E;&#x91CD;&#x5B9A;&#x4F4D;&#x3002;&#x7B26;&#x53F7;&#x89E3;&#x6790;&#x5C06;&#x6BCF;&#x4E2A;&#x7B26;&#x53F7;&#x7684;&#x5F15;&#x7528;&#x548C;&#x4E00;&#x4E2A;&#x5B9A;&#x4E49;&#x5173;&#x8054;&#x3002; &#x91CD;&#x5B9A;&#x4F4D;&#x5C06;&#x6C47;&#x7F16;&#x5668;&#x751F;&#x6210;&#x7684;&#x4ECE;&#x5730;&#x5740;0&#x5F00;&#x59CB;&#x7684;&#x4EE3;&#x7801;&#x548C;&#x6570;&#x636E;&#x8282;&#x4E0E;&#x5185;&#x5B58;&#x5173;&#x8054;&#x8D77;&#x6765;&#xFF0C;&#x5408;&#x5E76;&#x5F97;&#x5230;&#x4E00;&#x4E2A;&#x6587;&#x4EF6;&#x3002;</p>
+<p><strong>&#x6CE8;&#x610F;</strong>: &#x94FE;&#x63A5;&#x90E8;&#x5206;&#x4E0D;&#x6D89;&#x53CA;&#x51FD;&#x6570;&#x5185;&#x7684;&#x5C40;&#x90E8;&#x53D8;&#x91CF;&#x3002;</p>
+<h2 id="&#x76EE;&#x6807;&#x6587;&#x4EF6;">&#x76EE;&#x6807;&#x6587;&#x4EF6;</h2>
+<p>&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x5171;&#x6709;&#x4E09;&#x79CD;&#x5F62;&#x5F0F;&#xFF1A; * &#x53EF;&#x91CD;&#x5B9A;&#x4F4D;&#x76EE;&#x6807;&#x6587;&#x4EF6;(<code>.o</code>)&#xFF1A;&#x7531;&#x7F16;&#x8BD1;&#x5668;&#x548C;&#x6C47;&#x7F16;&#x5668;&#x751F;&#x6210;&#xFF0C;&#x4E0E;&#x5176;&#x4ED6;&#x6587;&#x4EF6;&#x5728;&#x94FE;&#x63A5;&#x65F6;&#x5408;&#x5E76;&#x4E3A;&#x53EF;&#x6267;&#x884C;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x3002; * &#x53EF;&#x6267;&#x884C;&#x76EE;&#x6807;&#x6587;&#x4EF6;: &#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x52A0;&#x8F7D;&#x8FDB;&#x5185;&#x5B58;&#x8FD0;&#x884C;&#x7684;&#x6587;&#x4EF6;&#x3002; * &#x5171;&#x4EAB;&#x76EE;&#x6807;&#x6587;&#x4EF6;(<code>.so</code>)&#xFF1A;&#x7279;&#x6B8A;&#x7684;&#x53EF;&#x91CD;&#x5B9A;&#x4F4D;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#xFF0C;&#x53EF;&#x4EE5;&#x5728;&#x94FE;&#x63A5;(&#x9759;&#x6001;&#x5171;&#x4EAB;&#x5E93;)&#x65F6;&#x52A0;&#x5165;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x6216;&#x52A0;&#x8F7D;&#x65F6;&#x6216;&#x8FD0;&#x884C;&#x65F6;(&#x52A8;&#x6001;&#x5171;&#x4EAB;&#x5E93;)&#x88AB;&#x52A8;&#x6001;&#x7684;&#x52A0;&#x8F7D;&#x5230;&#x5185;&#x5B58;&#x5E76;&#x6267;&#x884C;</p>
+<p>&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x7684;&#x683C;&#x5F0F;&#x4E3A;ELF&#xFF0C;&#x5176;&#x4E2D;&#x53EF;&#x91CD;&#x5B9A;&#x4F4D;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x7684;&#x6587;&#x4EF6;&#x683C;&#x5F0F;&#x5982;&#x4E0B;&#xFF1A;</p>
+<p><img src="/CSAPP-7-Linking/1.png" alt="ELF-format"></p>
+<p>&#x5404;&#x90E8;&#x5206;&#x7684;&#x5185;&#x5BB9;&#x5982;&#x4E0B;&#xFF1A;</p>
+<ul>
+<li>ELF&#x5934;&#xFF1A;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x3001;&#x5B57;&#x8282;&#x987A;&#x5E8F;&#x3001;&#x6587;&#x4EF6;&#x7C7B;&#x578B;&#x7B49;&#x4FE1;&#x606F;</li>
+<li>Segment header table: &#x53EF;&#x6267;&#x884C;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x5FC5;&#x987B;&#x5305;&#x542B;</li>
+<li>.text: &#x673A;&#x5668;&#x4EE3;&#x7801;</li>
+<li>.rodata: &#x53EA;&#x8BFB;&#x6570;&#x636E;&#xFF0C;<code>printf</code>&#x7684;&#x683C;&#x5F0F;&#x4E32;</li>
+<li>.data&#xFF1A;&#x521D;&#x59CB;&#x5316;&#x7684;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#x548C;&#x9759;&#x6001;&#x53D8;&#x91CF;</li>
+<li>.bss&#xFF1A;&#x672A;&#x521D;&#x59CB;&#x5316;&#x7684;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#x548C;&#x9759;&#x6001;&#x53D8;&#x91CF;&#xFF0C;&#x5B9E;&#x9645;&#x4E0A;&#x4E0D;&#x5360;&#x636E;&#x4EFB;&#x4F55;&#x7A7A;&#x95F4;&#xFF0C;&#x53EA;&#x662F;&#x4E00;&#x4E2A;&#x5360;&#x4F4D;&#x7B26;&#x3002;</li>
+<li>.symtab&#xFF1A;&#x7B26;&#x53F7;&#x8868;&#xFF0C;&#x5B58;&#x653E;&#x7A0B;&#x5E8F;&#x5B9A;&#x4E49;&#x548C;&#x5F15;&#x7528;&#x7684;&#x51FD;&#x6570;&#x548C;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#x4FE1;&#x606F;</li>
+<li>.rel.text&#xFF1A;&#x4EE3;&#x7801;&#x7684;&#x91CD;&#x5B9A;&#x4F4D;&#x4FE1;&#x606F;&#x3002;</li>
+<li>.rel.data: &#x5DF2;&#x521D;&#x59CB;&#x5316;&#x53D8;&#x91CF;&#x7684;&#x91CD;&#x5B9A;&#x4F4D;&#x4FE1;&#x606F;</li>
+<li>.debug&#xFF1A;&#x8C03;&#x8BD5;&#x7B26;&#x53F7;&#x8868;</li>
+<li>Section header table: &#x6BCF;&#x4E2A;&#x90E8;&#x5206;&#x7684;&#x504F;&#x79FB;&#x548C;&#x5927;&#x5C0F;</li>
+</ul>
+<h2 id="&#x7B26;&#x53F7;&#x8868;">&#x7B26;&#x53F7;&#x8868;</h2>
+<p>&#x7B26;&#x53F7;&#x8868;&#x4E2D;&#x5305;&#x542B;&#x4E86;&#x4E09;&#x79CD;&#x4E0D;&#x540C;&#x7684;&#x7B26;&#x53F7;&#xFF1A; * &#x5168;&#x5C40;&#x7B26;&#x53F7;(Global Symbols)&#xFF1A;&#x7531;&#x5F53;&#x524D;&#x6A21;&#x5757;&#x5B9A;&#x4E49;&#xFF0C;&#x80FD;&#x88AB;&#x5176;&#x4ED6;&#x6A21;&#x5757;&#x5F15;&#x7528;&#x7684;&#x7B26;&#x53F7;&#x3002; * &#x5916;&#x90E8;&#x7B26;&#x53F7;(External Symbols)&#xFF1A;&#x7531;&#x5176;&#x4ED6;&#x6A21;&#x5757;&#x5B9A;&#x4E49;&#xFF0C;&#x4F46;&#x662F;&#x5728;&#x5F53;&#x524D;&#x6A21;&#x5757;&#x5F15;&#x7528;&#x7684;&#x7B26;&#x53F7; * &#x5C40;&#x90E8;&#x7B26;&#x53F7;&#xFF1A;&#x53EA;&#x88AB;&#x5F53;&#x524D;&#x6A21;&#x5757;&#x5B9A;&#x4E49;&#x7684;static&#x51FD;&#x6570;&#x548C;&#x53D8;&#x91CF;&#x3002;</p>
+<p>&#x7B26;&#x53F7;&#x8868;&#x4E2D;&#x6BCF;&#x4E2A;&#x6761;&#x76EE;&#x7684;&#x683C;&#x5F0F;&#x5982;&#x4E0B; <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>{</span></span><br><span class="line">    <span class="keyword">int</span> name; <span class="comment">// &#x5B57;&#x7B26;&#x4E32;&#x8868;&#x7684;&#x5B57;&#x8282;&#x504F;&#x79FB;&#xFF0C;&#x6307;&#x5411;&#x7B26;&#x53F7;&#x7684;&#x4EE5;null&#x7ED3;&#x5C3E;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x540D;&#x5B57;</span></span><br><span class="line">    <span class="keyword">char</span> type;  <span class="comment">// &#x6570;&#x636E;or&#x51FD;&#x6570;&#xFF0C;4&#x4F4D;</span></span><br><span class="line">    <span class="keyword">char</span> binding; <span class="comment">// &#x5C40;&#x90E8;or&#x5168;&#x5C40;&#xFF0C;4&#x4F4D;</span></span><br><span class="line">    <span class="keyword">char</span> reserved; <span class="comment">// &#x662F;&#x5426;&#x88AB;&#x4F7F;&#x7528;</span></span><br><span class="line">    <span class="keyword">short</span> section; <span class="comment">// &#x5728;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x4E2D;&#x5BF9;&#x5E94;&#x7684;&#x8282;&#xFF0C;&#x5982;.text,.data, .bss</span></span><br><span class="line">    <span class="keyword">long</span> value; <span class="comment">// &#x5730;&#x5740;&#x504F;&#x79FB;&#x6216;&#x7EDD;&#x5BF9;&#x5730;&#x5740;</span></span><br><span class="line">    <span class="keyword">long</span> size; <span class="comment">// &#x76EE;&#x6807;&#x7684;&#x5927;&#x5C0F;</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure></p>
+<p>&#x4E09;&#x4E2A;&#x7279;&#x6B8A;&#x7684;&#x4F2A;&#x8282;&#xFF1A;</p>
+<ul>
+<li>UNDEF&#xFF1A;&#x5728;&#x5176;&#x4ED6;&#x5730;&#x65B9;&#x5B9A;&#x4E49;&#x7684;&#x7B26;&#x53F7;</li>
+<li>ABS&#xFF1A;&#x4E0D;&#x8BE5;&#x88AB;&#x91CD;&#x5B9A;&#x4F4D;&#x7684;&#x7B26;&#x53F7;</li>
+<li>COMMON: &#x672A;&#x521D;&#x59CB;&#x5316;&#x7684;&#x5168;&#x5C40;&#x53D8;&#x91CF;/.bss&#x662F;&#x672A;&#x521D;&#x59CB;&#x5316;&#x7684;&#x9759;&#x6001;&#x53D8;&#x91CF;&#x4EE5;&#x53CA;&#x521D;&#x59CB;&#x5316;&#x4E3A;0&#x7684;&#x5168;&#x5C40;&#x6216;&#x9759;&#x6001;&#x53D8;&#x91CF;&#x3002;</li>
+</ul>
+<h2 id="&#x7B26;&#x53F7;&#x89E3;&#x6790;symbol-resolution">&#x7B26;&#x53F7;&#x89E3;&#x6790;(Symbol resolution)</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.c</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> *a, <span class="keyword">int</span> n)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">2</span>] = {<span class="number">1</span>, <span class="number">2</span>}; <span class="comment">// &#x5B9A;&#x4E49;array</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> <span class="comment">// &#x5B9A;&#x4E49;&#x5168;&#x5C40;&#x51FD;&#x6570;main</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">int</span> val = sum(<span class="built_in">array</span>, <span class="number">2</span>); <span class="comment">// &#x5C40;&#x90E8;&#x53D8;&#x91CF;val&#xFF0C;&#x4E0E;&#x94FE;&#x63A5;&#x65E0;&#x5173;</span></span><br><span class="line">    <span class="comment">// sum &#x548C; array&#x5168;&#x5C40;&#x5F15;&#x7528;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> val;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// -----------------------------------------</span></span><br><span class="line"><span class="comment">// sum.c</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> *a, <span class="keyword">int</span> n)</span> <span class="comment">// &#x5B9A;&#x4E49;&#x5168;&#x5C40;&#x51FD;&#x6570; sum</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">int</span> i, s = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        s += a[i];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> s;</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>&#x5F3A;&#x7B26;&#x53F7;&#x4E0E;&#x5F31;&#x7B26;&#x53F7;:</p>
+<ul>
+<li>&#x5F3A;&#x7B26;&#x53F7;&#xFF1A;&#x51FD;&#x6570;&#x6216;&#x521D;&#x59CB;&#x5316;&#x7684;&#x53D8;&#x91CF;&#x3002;</li>
+<li>&#x5F31;&#x7B26;&#x53F7;&#xFF1A;&#x672A;&#x521D;&#x59CB;&#x5316;&#x7684;&#x53D8;&#x91CF;</li>
+</ul>
+<p>&#x7B26;&#x53F7;&#x89E3;&#x6790;&#x89C4;&#x5219;&#xFF1A;</p>
+<ul>
+<li>&#x4E0D;&#x5141;&#x8BB8;&#x6709;&#x591A;&#x4E2A;&#x540C;&#x540D;&#x7684;&#x5F3A;&#x7B26;&#x53F7;</li>
+<li>&#x5982;&#x679C;&#x5F3A;&#x7B26;&#x53F7;&#x4E0E;&#x5F31;&#x7B26;&#x53F7;&#x540C;&#x540D;&#xFF0C;&#x5219;&#x9009;&#x62E9;&#x5F3A;&#x7B26;&#x53F7;</li>
+<li>&#x5982;&#x679C;&#x6709;&#x591A;&#x4E2A;&#x540C;&#x540D;&#x7684;&#x5F31;&#x7B26;&#x53F7;&#xFF0C;&#x4EFB;&#x610F;&#x9009;&#x4E00;&#x4E2A;</li>
+</ul>
+<p>&#x4E0B;&#x9762;&#x4E3A;&#x51E0;&#x4E2A;&#x91CD;&#x5B9A;&#x4F4D;&#x4E2D;&#x53EF;&#x80FD;&#x51FA;&#x73B0;&#x7684;&#x4E00;&#x4E9B;&#x95EE;&#x9898;&#xFF1A;</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//p1.c</span></span><br><span class="line"><span class="keyword">int</span> x = <span class="number">7</span>; </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>{ </span><br><span class="line">    p2();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, x)</span><br><span class="line"> } </span><br><span class="line"></span><br><span class="line"><span class="comment">// p2.c</span></span><br><span class="line"><span class="keyword">int</span> x;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">p2</span><span class="params">()</span> </span>{</span><br><span class="line">    x = <span class="number">6</span>;</span><br><span class="line"> }</span><br><span class="line"></span><br><span class="line"><span class="comment">// output: x = 6&#x3002;&#x53EF;&#x4EE5;&#x770B;&#x51FA;&#x7531;&#x4E8E;c2&#x7684;x&#x6CA1;&#x6709;&#x521D;&#x59CB;&#x5316;&#x4E14;&#x540C;&#x540D;&#xFF0C;&#x56E0;&#x6B64;&#x94FE;&#x63A5;&#x5668;&#x9009;&#x62E9;&#x4E86;c1&#x4E2D;&#x7684;&#x5F3A;&#x7B26;&#x53F7;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// p1.c</span></span><br><span class="line"><span class="keyword">int</span> x = <span class="number">1</span>; </span><br><span class="line"><span class="keyword">int</span> y = <span class="number">2</span>;</span><br><span class="line">p1() { ... } </span><br><span class="line"></span><br><span class="line"><span class="comment">// p2.c</span></span><br><span class="line"><span class="keyword">double</span> x;</span><br><span class="line">p2() { ... }</span><br><span class="line"></span><br><span class="line"><span class="comment">// &#x4E00;&#x65E6;p2&#x4E2D;&#x5BF9;x&#x6539;&#x53D8;&#xFF0C;&#x7531;&#x4E8E;x&#x662F;double&#x53D8;&#x91CF;&#xFF0C;&#x4E14;&#x94FE;&#x63A5;&#x5668;&#x9009;&#x62E9;&#x4E86;c1&#x7684;&#x5F3A;&#x7B26;&#x53F7;&#xFF0C;&#x56E0;&#x6B64;y&#x4E5F;&#x4F1A;&#x88AB;&#x6539;&#x53D8;&#x3002;</span></span><br><span class="line"><span class="comment">// &#x5728;&#x7B26;&#x53F7;&#x89E3;&#x6790;&#x9636;&#x6BB5;&#xFF0C;x&#x5728;&#x7B26;&#x53F7;&#x8868;&#x4E2D;&#x7684;section&#x662F;COMMON&#xFF0C;</span></span><br><span class="line"><span class="comment">// &#x56E0;&#x4E3A;&#x53EA;&#x6709;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#x7F16;&#x8BD1;&#x5668;&#x65E0;&#x6CD5;&#x9884;&#x6D4B;&#x94FE;&#x63A5;&#x5668;&#x4F7F;&#x7528;&#x7684;&#x662F;&#x54EA;&#x4E00;&#x4E2A;&#x6A21;&#x5757;&#x7684;x&#x5B9A;&#x4E49;&#x3002;</span></span><br></pre></td></tr></table></figure>
+<p>&#x7F16;&#x7A0B;&#x89C4;&#x8303;&#xFF1A;</p>
+<ul>
+<li>&#x5C3D;&#x91CF;&#x4F7F;&#x7528;&#x9759;&#x6001;&#x53D8;&#x91CF;</li>
+<li>&#x5B9A;&#x4E49;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#x7684;&#x65F6;&#x5019;&#x521D;&#x59CB;&#x5316;</li>
+<li>&#x4F7F;&#x7528;<code>extern</code>&#x5173;&#x952E;&#x5B57;</li>
+</ul>
+<h2 id="&#x91CD;&#x5B9A;&#x4F4D;relocation">&#x91CD;&#x5B9A;&#x4F4D;(Relocation)</h2>
+<p>&#x5728;&#x7B26;&#x53F7;&#x89E3;&#x6790;&#x540E;&#xFF0C;&#x4EE3;&#x7801;&#x4E2D;&#x7684;&#x6BCF;&#x4E2A;&#x5F15;&#x7528;&#x90FD;&#x4E0E;&#x4E00;&#x4E2A;&#x7B26;&#x53F7;&#x8868;&#x7684;&#x6761;&#x76EE;&#x5173;&#x8054;&#xFF0C;&#x4EE3;&#x7801;&#x8282;&#x548C;&#x6570;&#x636E;&#x8282;&#x7684;&#x5927;&#x5C0F;&#x786E;&#x5B9A;&#x3002; &#x800C;&#x5728;&#x91CD;&#x5B9A;&#x4F4D;&#x6B65;&#x9AA4;&#x4E2D;&#xFF0C;&#x8F93;&#x5165;&#x6A21;&#x5757;&#x88AB;&#x5408;&#x5E76;&#xFF0C;&#x4E3A;&#x6BCF;&#x4E2A;&#x7B26;&#x53F7;&#x5206;&#x914D;&#x8FD0;&#x884C;&#x5730;&#x5740;&#x3002;&#x4E0B;&#x56FE;&#x4E3A;&#x91CD;&#x5B9A;&#x4F4D;&#x7684;&#x793A;&#x610F;&#x56FE;&#xFF0C;&#x6CE8;&#x610F;.bss&#x548C;COMMON&#x90E8;&#x5206;&#x7684;&#x53D8;&#x91CF;&#x5B9E;&#x9645;&#x4E0A;&#x662F;&#x5360;&#x4F4D;&#x7B26;&#xFF0C;&#x4E0D;&#x5360;&#x7528;&#x7A7A;&#x95F4;&#xFF0C;&#x56E0;&#x6B64;&#x5728;&#x4E0A;&#x56FE;&#x4E2D;&#x6CA1;&#x6709;&#x4F53;&#x73B0;&#x3002;</p>
+<p><img src="/CSAPP-7-Linking/2.png" alt="relocation"></p>
+<h3 id="&#x91CD;&#x5B9A;&#x4F4D;&#x6761;&#x76EE;">&#x91CD;&#x5B9A;&#x4F4D;&#x6761;&#x76EE;</h3>
+<p>&#x7531;&#x4E8E;&#x65E0;&#x6CD5;&#x9884;&#x5148;&#x77E5;&#x9053;&#x6A21;&#x5757;&#x5F15;&#x7528;&#x7684;&#x5916;&#x90E8;&#x51FD;&#x6570;&#x6216;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#x7684;&#x4F4D;&#x7F6E;&#xFF0C;&#x7F16;&#x8BD1;&#x5668;&#x4F1A;&#x751F;&#x6210;&#x4E00;&#x4E2A;&#x91CD;&#x5B9A;&#x4F4D;&#x6761;&#x76EE;(&#x653E;&#x4E8E;.rel.text&#x548C;.rel.data&#x4E2D;)&#x3002;&#x5982;&#x4E0B;&#x4E3A;&#x91CD;&#x5B9A;&#x4F4D;&#x6761;&#x76EE;&#x7684;&#x683C;&#x5F0F; <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>{</span></span><br><span class="line">    <span class="keyword">long</span> offset; </span><br><span class="line">    <span class="keyword">long</span> type: <span class="number">32</span></span><br><span class="line">         symbol: <span class="number">32</span>;</span><br><span class="line">    <span class="keyword">long</span> addend;</span><br><span class="line">} ELF64_Rela</span><br></pre></td></tr></table></figure></p>
+<h3 id="&#x4E00;&#x4E2A;&#x4F8B;&#x5B50;">&#x4E00;&#x4E2A;&#x4F8B;&#x5B50;</h3>
+<p>&#x5BF9;&#x4E8E;&#x4EE3;&#x7801; <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.c</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> *a, <span class="keyword">int</span> n)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">2</span>] = {<span class="number">1</span>, <span class="number">2</span>}; <span class="comment">// &#x5B9A;&#x4E49;array</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> <span class="comment">// &#x5B9A;&#x4E49;&#x5168;&#x5C40;&#x51FD;&#x6570;main</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">int</span> val = sum(<span class="built_in">array</span>, <span class="number">2</span>); <span class="comment">// &#x5C40;&#x90E8;&#x53D8;&#x91CF;val&#xFF0C;&#x4E0E;&#x94FE;&#x63A5;&#x65E0;&#x5173;</span></span><br><span class="line">    <span class="comment">// sum &#x548C; array&#x5168;&#x5C40;&#x5F15;&#x7528;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> val;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// -----------------------------------------</span></span><br><span class="line"><span class="comment">// sum.c</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> *a, <span class="keyword">int</span> n)</span> <span class="comment">// &#x5B9A;&#x4E49;&#x5168;&#x5C40;&#x51FD;&#x6570; sum</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">int</span> i, s = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        s += a[i];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> s;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></p>
+<p>&#x5C06;&#x5176;&#x53CD;&#x6C47;&#x7F16;&#x53EF;&#x91CD;&#x5B9A;&#x4F4D;&#x5BF9;&#x8C61;&#x6587;&#x4EF6;&#x53EF;&#x4EE5;&#x5F97;&#x5230; <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">0000000000000000 &lt;main&gt;:</span><br><span class="line">    0: 48 83 ec 08      sub   $0x8, %rsp</span><br><span class="line">    4: be 02 00 00 00   mov   $0x2, %esi </span><br><span class="line">    9: bf 00 00 00 00   mov   $0x0, %edi  # %edi = &amp;array</span><br><span class="line">                a: R_X86_64_32 array      # Relocation entry</span><br><span class="line">    e: e8 00 00 00 00   callq 13 &lt;main+0x13&gt; # sum()</span><br><span class="line">                f: R_X86_64_PC32 sum-0x4  # Relocation entry</span><br><span class="line">   13: 48 83 c4 08      add   $0x8, %rsp</span><br><span class="line">   17: c3               retq</span><br></pre></td></tr></table></figure></p>
+<p>&#x5BF9;&#x4E8E;<code>sum</code>&#x51FD;&#x6570;&#xFF0C;&#x5176;&#x91CD;&#x5B9A;&#x4F4D;&#x7C7B;&#x578B;&#x4E3A;<code>R_X86_64_PC32</code>&#xFF08;&#x76F8;&#x5BF9;&#x5730;&#x5740;&#xFF09; <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">r.offset = 0xf // &#x8282;&#x504F;&#x79FB;</span><br><span class="line">r.symbol = sum </span><br><span class="line">r.type = R_X86_64_PC32</span><br><span class="line">r.addend = -4 // &#x504F;&#x79FB;&#x91CF;</span><br></pre></td></tr></table></figure> &#x8BA1;&#x7B97;&#x8FC7;&#x7A0B;&#x4E3A; <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ADDR(.text) = 0x4004d0 </span><br><span class="line">ADDR(sum) = 0x4004e8 // &#x5DF2;&#x7ECF;&#x786E;&#x5B9A;</span><br><span class="line"></span><br><span class="line">refaddr = ADDR(s) + r.offsett = 0x4004df // &#x5F15;&#x7528;&#x7684;&#x8FD0;&#x884C;&#x5730;&#x5740;</span><br><span class="line"></span><br><span class="line">*refptr = (unsigned) (ADDR(r.symbol) + r.addend - refaddr) </span><br><span class="line">        = (unsigned) (0x4004e8 - 4 -0x4004df) </span><br><span class="line">        = (unsigned) 0x5</span><br></pre></td></tr></table></figure></p>
+<p>&#x5BF9;&#x4E8E;<code>array</code>&#xFF0C;&#x5176;&#x91CD;&#x5B9A;&#x4F4D;&#x7C7B;&#x578B;&#x4E3A;<code>R_X86_64_32</code>&#xFF08;&#x7EDD;&#x5BF9;&#x5730;&#x5740;&#xFF09; <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">r.offset = 0xa // &#x8282;&#x504F;&#x79FB;</span><br><span class="line">r.symbol = array</span><br><span class="line">r.type = R_X86_64_32</span><br><span class="line">r.addend = 0 // &#x504F;&#x79FB;&#x91CF;</span><br></pre></td></tr></table></figure> &#x8BA1;&#x7B97;&#x8FC7;&#x7A0B;&#x4E3A; <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ADDR(.text) = 0x4004d0 </span><br><span class="line">ADDR(sum) = 0x601018 // &#x5DF2;&#x7ECF;&#x786E;&#x5B9A;</span><br><span class="line"></span><br><span class="line">refaddr = ADDR(s) + r.offsett = 0x4004da // &#x5F15;&#x7528;&#x7684;&#x8FD0;&#x884C;&#x5730;&#x5740;</span><br><span class="line"></span><br><span class="line">*refptr = (unsigned) (ADDR(r.symbol) + r.addend) </span><br><span class="line">        = (unsigned) (0x601018) </span><br></pre></td></tr></table></figure></p>
+<p>&#x56E0;&#x6B64;&#xFF0C;&#x5728;&#x94FE;&#x63A5;&#x5B8C;&#x6210;&#x540E;&#x7684;&#x53CD;&#x7F16;&#x8BD1;&#x5F97;&#x5230;&#x7684;&#x6C47;&#x7F16;&#x4EE3;&#x7801;&#x4E3A; <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">00000000004004d0 &lt;main&gt;:</span><br><span class="line">    4004d0: 48 83 ec 08      sub   $0x8, %rsp</span><br><span class="line">    4004d4: be 02 00 00 00   mov   $0x2, %esi </span><br><span class="line">    4004d9: bf 18 10 60 00   mov   $0x0, %edi  # %edi = &amp;array</span><br><span class="line">    4004de: e8 05 00 00 00   callq 4004e8 &lt;sum&gt; # sum()</span><br><span class="line">    4004e3: 48 83 c4 08      add   $0x8, %rsp</span><br><span class="line">    4004e7: c3               retq </span><br><span class="line"></span><br><span class="line">00000000004004e8 &lt;sum&gt;:</span><br><span class="line">    4004e8: b8 00 00 00 00   mov   $0x0, %eax</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">    400501: f3 c3            repz retq</span><br></pre></td></tr></table></figure></p>
+<p>&#x4E00;&#x4E9B;&#x95EE;&#x9898;&#xFF1A;&#x6CE8;&#x610F;&#xFF0C;&#x91CD;&#x5B9A;&#x4F4D;&#x6761;&#x76EE;&#x662F;&#x4E0D;&#x77E5;&#x9053;&#x5F15;&#x7528;&#x4F4D;&#x7F6E;&#x7684;&#x6587;&#x4EF6;&#x751F;&#x6210;&#x7684;&#x3002; &#x5982;&#x679C;&#x591A;&#x6B21;&#x5F15;&#x7528;&#x662F;&#x5426;&#x6BCF;&#x6B21;&#x5F15;&#x7528;&#x90FD;&#x4F1A;&#x6709;&#x4E00;&#x4E2A;&#x91CD;&#x5B9A;&#x4F4D;&#x6761;&#x76EE;&#xFF1F; &#x672A;&#x521D;&#x59CB;&#x5316;&#x7684;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#x4F4D;&#x7F6E;&#xFF1F;</p>
+<p>&#x6700;&#x7EC8;&#x5408;&#x6210;&#x7684;&#x53EF;&#x6267;&#x884C;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x7684;&#x5185;&#x5B58;&#x793A;&#x610F;&#x56FE;&#x5982;&#x4E0B; <img src="/CSAPP-7-Linking/3.png" alt="memory"></p>
+<h1 id="&#x94FE;&#x63A5;&#x5E93;">&#x94FE;&#x63A5;&#x5E93;</h1>
+<p>&#x5728;&#x5F00;&#x53D1;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x90E8;&#x5206;&#x4EE3;&#x7801;&#x5728;&#x4E0D;&#x540C;&#x7684;&#x7A0B;&#x5E8F;&#x4E2D;&#x6709;&#x7740;&#x5F88;&#x9AD8;&#x7684;&#x51FA;&#x73B0;&#x9891;&#x7387;&#x3002;&#x56E0;&#x6B64;&#xFF0C;&#x7F16;&#x8BD1;&#x7CFB;&#x7EDF;&#x63D0;&#x4F9B;&#x4E86;&#x5E93;&#x7684;&#x6982;&#x5FF5;&#x3002;</p>
+<h2 id="&#x9759;&#x6001;&#x5E93;">&#x9759;&#x6001;&#x5E93;</h2>
+<p>&#x9759;&#x6001;&#x5E93;&#x53EF;&#x4EE5;&#x4F5C;&#x4E3A;&#x94FE;&#x63A5;&#x7684;&#x8F93;&#x5165;&#xFF0C;&#x5F53;&#x8F93;&#x51FA;&#x53EF;&#x6267;&#x884C;&#x6587;&#x4EF6;&#x65F6;&#xFF0C;&#x53EA;&#x590D;&#x5236;&#x9759;&#x6001;&#x5E93;&#x5185;&#x88AB;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x5F15;&#x7528;&#x7684;&#x76EE;&#x6807;&#x6A21;&#x5757;&#xFF0C;&#x8282;&#x7701;&#x4EE3;&#x7801;&#x7A7A;&#x95F4;&#x3002;</p>
+<p>&#x4EE5;&#x4E0B;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#x4E3A;&#x4F8B;&#xFF1A; <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;vector.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> x[<span class="number">2</span>] = {<span class="number">1</span>, <span class="number">2</span>};</span><br><span class="line"><span class="keyword">int</span> y[<span class="number">2</span>] = {<span class="number">3</span>, <span class="number">4</span>};</span><br><span class="line"><span class="keyword">int</span> z[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    addvec(x, y, z, <span class="number">2</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;z = [%d %d]\n&quot;</span>, z[<span class="number">0</span>], z[<span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// -----------------------------------------</span></span><br><span class="line"><span class="comment">// addvec.c</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addvec</span><span class="params">(<span class="keyword">int</span> *x, <span class="keyword">int</span> *y, <span class="keyword">int</span> *z, <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        z[i] = x[i] + y[i];</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// -----------------------------------------</span></span><br><span class="line"><span class="comment">// multvec.c</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">multvec</span><span class="params">(<span class="keyword">int</span> *x, <span class="keyword">int</span> *y, <span class="keyword">int</span> *z, <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        z[i] = x[i] * y[i];</span><br><span class="line">}</span><br></pre></td></tr></table></figure></p>
+<p>&#x4E3B;&#x51FD;&#x6570;&#x4E2D;&#x5F15;&#x7528;&#x4E86;<code>addvec</code>&#x51FD;&#x6570;&#xFF0C;&#x56E0;&#x6B64;&#x94FE;&#x63A5;&#x5668;&#x4F1A;&#x9884;&#x5148;&#x5BFB;&#x627E;&#x6211;&#x4EEC;&#x521B;&#x5EFA;&#x7684;&#x9759;&#x6001;&#x5E93;&#xFF0C;&#x793A;&#x610F;&#x56FE;&#x5982;&#x4E0B;</p>
+<p><img src="/CSAPP-7-Linking/4.png" alt="static-lib"></p>
+<p>&#x94FE;&#x63A5;&#x5668;&#x89E3;&#x6790;&#x5916;&#x90E8;&#x5F15;&#x7528;&#x7684;&#x6B65;&#x9AA4;&#x4E3A;&#xFF1A;</p>
+<ul>
+<li>&#x626B;&#x63CF;&#x6240;&#x6709;<code>.o</code> &#x548C; <code>.a</code>&#x6587;&#x4EF6;&#xFF0C;&#x7EF4;&#x62A4;&#x4E2D;&#x5F53;&#x524D;&#x672A;&#x89E3;&#x6790;&#x5F15;&#x7528;&#x7684;&#x5217;&#x8868;U,&#x5DF2;&#x5B9A;&#x4E49;&#x7684;&#x7B26;&#x53F7;&#x96C6;&#x5408;D&#x548C;&#x53EF;&#x91CD;&#x5B9A;&#x4F4D;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x96C6;&#x5408;E&#x3002;</li>
+<li>&#x6839;&#x636E;&#x626B;&#x63CF;&#x5230;&#x7684;&#x6587;&#x4EF6;&#x65F6;&#xFF0C;&#x8BD5;&#x56FE;&#x53BB;&#x5BFB;&#x627E;&#x672A;&#x89E3;&#x6790;&#x5F15;&#x7528;&#x7684;&#x5B9A;&#x4E49;&#xFF0C;&#x66F4;&#x65B0;U,D,E&#x3002;&#x4E22;&#x5F03;&#x4E0D;&#x5305;&#x542B;&#x5728;E&#x4E2D;&#x7684;&#x6587;&#x4EF6;&#x3002;</li>
+<li>&#x5982;&#x679C;&#x626B;&#x63CF;&#x7ED3;&#x675F;&#x65F6;U&#x975E;&#x7A7A;&#xFF0C;&#x5219;&#x62A5;&#x9519;&#x3002;</li>
+</ul>
+<p>&#x8FD9;&#x4E00;&#x505A;&#x6CD5;&#x7684;&#x95EE;&#x9898;&#x662F;<code>gcc</code>&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x987A;&#x5E8F;&#x53D8;&#x5F97;&#x975E;&#x5E38;&#x91CD;&#x8981;&#xFF0C;&#x56E0;&#x4E3A;&#x672A;&#x88AB;&#x5F15;&#x7528;&#x7684;&#x6587;&#x4EF6;&#x4F1A;&#x88AB;&#x4E22;&#x5F03;&#x3002;&#x4F8B;&#x5982;&#xFF0C;&#x5047;&#x8BBE;<code>foo.c</code>&#x8C03;&#x7528;<code>libx.a, libz.a</code>&#xFF0C;&#x800C;&#x8FD9;&#x4E24;&#x4E2A;&#x5E93;&#x53C8;&#x8C03;&#x7528;<code>liby.a</code>&#xFF0C;&#x5219;&#x987A;&#x5E8F;&#x5FC5;&#x987B;&#x4E3A; <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc foo.c libx.a libz.a liby.a</span><br></pre></td></tr></table></figure></p>
+<h2 id="&#x5171;&#x4EAB;&#x5E93;">&#x5171;&#x4EAB;&#x5E93;</h2>
+<p>&#x9759;&#x6001;&#x5E93;&#x5177;&#x6709;&#x4EE5;&#x4E0B;&#x7684;&#x7F3A;&#x70B9;&#xFF1A;</p>
+<ul>
+<li>&#x6BCF;&#x4E2A;&#x53EF;&#x79E9;&#x6267;&#x884C;&#x7A0B;&#x5E8F;&#x90FD;&#x6709;<code>printf</code>&#x6216;<code>scanf</code>&#x7684;&#x4EE3;&#x7801;&#x6BB5;&#xFF0C;&#x9020;&#x6210;&#x5185;&#x5B58;&#x7684;&#x6D6A;&#x8D39;&#x3002;</li>
+<li>&#x9759;&#x6001;&#x5E93;&#x7684;&#x66F4;&#x65B0;&#x9700;&#x8981;&#x91CD;&#x65B0;&#x94FE;&#x63A5;&#x3002;</li>
+</ul>
+<p>&#x5171;&#x4EAB;&#x5E93;&#x5219;&#x4E0D;&#x9700;&#x8981;&#x7A0B;&#x5E8F;&#x590D;&#x5236;&#x4EE3;&#x7801;&#x6BB5;&#xFF0C;&#x53EA;&#x590D;&#x5236;&#x4E86;&#x5171;&#x4EAB;&#x5E93;&#x7684;&#x91CD;&#x5B9A;&#x4F4D;&#x548C;&#x7B26;&#x53F7;&#x8868;&#x4FE1;&#x606F;&#xFF0C;&#x5728;&#x7A0B;&#x5E8F;&#x8FD0;&#x884C;&#x65F6;&#x8FDB;&#x884C;&#x89E3;&#x6790;&#x5BF9;&#x5E93;&#x7684;&#x4F7F;&#x7528;&#x3002;&#x5171;&#x4EAB;&#x5E93;&#x7684;&#x793A;&#x610F;&#x56FE;&#x5982;&#x4E0B;</p>
+<p><img src="/CSAPP-7-Linking/5.png" alt="dynamic-link"></p>
+<h1 id="&#x603B;&#x7ED3;">&#x603B;&#x7ED3;</h1>
+<p>&#x94FE;&#x63A5;&#x8FD9;&#x90E8;&#x5206;&#x611F;&#x89C9;&#x5B66;&#x7684;&#x4F3C;&#x61C2;&#x975E;&#x61C2;&#xFF0C;&#x4E66;&#x4E0A;&#x4ECB;&#x7ECD;&#x7684;&#x4E5F;&#x90FD;&#x662F;&#x6BD4;&#x8F83;&#x7B80;&#x5355;&#x7684;&#x4F8B;&#x5B50;&#x3002;&#x540E;&#x9762;&#x5982;&#x679C;&#x6709;&#x7528;&#x7684;&#x8BDD;&#x53EF;&#x80FD;&#x8FD8;&#x8981;&#x8FDB;&#x4E00;&#x6B65;&#x9605;&#x8BFB;&#x3002;&#x5305;&#x62EC;&#x5E93;&#x6253;&#x6869;&#x6280;&#x672F;&#x4E5F;&#x53EA;&#x662F;&#x4E86;&#x89E3;&#x4E86;&#x4E00;&#x4E2A;&#x76AE;&#x6BDB;&#xFF0C;&#x6545;&#x8FD9;&#x91CC;&#x6682;&#x65F6;&#x6CA1;&#x6709;&#x8FDB;&#x884C;&#x8BB0;&#x5F55;&#x3002;</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/CSAPPLab-4-Cache-Lab/" rel="prev" title="CSAPPLab(4): Cache Lab">
+      <i class="fa fa-chevron-left"></i> CSAPPLab(4): Cache Lab
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">编译过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c%E8%AF%AD%E8%A8%80%E5%A4%8D%E4%B9%A0%E7%9B%B8%E5%85%B3"><span class="nav-number">1.2.</span> <span class="nav-text">C语言复习相关</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5"><span class="nav-number">2.</span> <span class="nav-text">静态链接</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">目标文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E8%A1%A8"><span class="nav-number">2.2.</span> <span class="nav-text">符号表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E8%A7%A3%E6%9E%90symbol-resolution"><span class="nav-number">2.3.</span> <span class="nav-text">符号解析(Symbol resolution)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%AE%9A%E4%BD%8Drelocation"><span class="nav-number">2.4.</span> <span class="nav-text">重定位(Relocation)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5%E5%BA%93"><span class="nav-number">3.</span> <span class="nav-text">链接库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%BA%93"><span class="nav-number">3.1.</span> <span class="nav-text">静态库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E5%BA%93"><span class="nav-number">3.2.</span> <span class="nav-text">共享库</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhikai"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Zhikai</p>
+  <div class="site-description" itemprop="description">Have fun</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhikai</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
