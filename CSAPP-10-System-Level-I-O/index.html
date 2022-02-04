@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"hitsresultsfoundin{time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="h1 { border-bottom: none }   h2 { border-bottom: none }">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAPP(10): System Level I_O">
+<meta property="og:url" content="http://example.com/CSAPP-10-System-Level-I-O/index.html">
+<meta property="og:site_name" content="Zhikaiiii&#39;s Page">
+<meta property="og:description" content="h1 { border-bottom: none }   h2 { border-bottom: none }">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/CSAPP-10-System-Level-I-O/1.png">
+<meta property="og:image" content="http://example.com/CSAPP-10-System-Level-I-O/2.png">
+<meta property="og:image" content="http://example.com/CSAPP-10-System-Level-I-O/3.png">
+<meta property="og:image" content="http://example.com/CSAPP-10-System-Level-I-O/6.png">
+<meta property="og:image" content="http://example.com/CSAPP-10-System-Level-I-O/5.png">
+<meta property="article:published_time" content="2022-02-03T09:01:53.000Z">
+<meta property="article:modified_time" content="2022-02-04T05:31:45.610Z">
+<meta property="article:author" content="Zhikai">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/CSAPP-10-System-Level-I-O/1.png">
+
+<link rel="canonical" href="http://example.com/CSAPP-10-System-Level-I-O/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CSAPP(10): System Level I_O | Zhikaiiii's Page</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Zhikaiiii's Page</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">C.O.Y.G</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/CSAPP-10-System-Level-I-O/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Zhikai">
+      <meta itemprop="description" content="Have fun">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhikaiiii's Page">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CSAPP(10): System Level I_O
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-03 17:01:53" itemprop="dateCreated datePublished" datetime="2022-02-03T17:01:53+08:00">2022-02-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-04 13:31:45" itemprop="dateModified" datetime="2022-02-04T13:31:45+08:00">2022-02-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <style> h1 { border-bottom: none } </style>
+<style> h2 { border-bottom: none } </style>
+<span id="more"></span>
+<h1 id="&#x80CC;&#x666F;">&#x80CC;&#x666F;</h1>
+<p>&#x672C;&#x8282;&#x662F;&#x5BF9;CSAPP Chapter10&#x5185;&#x5BB9;&#x7684;&#x6574;&#x7406;&#xFF0C;&#x540C;&#x6837;&#x53C2;&#x8003;b&#x7AD9;&#x8BFE;&#x7A0B;&#x4E0E;&#x4E66;&#x672C;&#x3002; I/O&#x662F;&#x6307;&#x5728;&#x4E3B;&#x5B58;&#x548C;&#x5916;&#x90E8;&#x8BBE;&#x5907;(&#x5305;&#x62EC;&#x78C1;&#x76D8;&#x3001;&#x7EC8;&#x7AEF;&#x3001;&#x7F51;&#x7EDC;)&#x4E4B;&#x95F4;&#x590D;&#x5236;&#x6570;&#x636E;&#x7684;&#x8FC7;&#x7A0B;&#xFF0C;<strong>&#x8F93;&#x5165;</strong>&#x662F;&#x4ECE;I/O&#x8BBE;&#x5907;&#x590D;&#x5236;&#x6570;&#x636E;&#x5230;&#x4E3B;&#x5B58;&#xFF0C;<strong>&#x8F93;&#x51FA;</strong>&#x662F;&#x4ECE;&#x4E3B;&#x5B58;&#x590D;&#x5236;&#x6570;&#x636E;&#x5230;I/O&#x8BBE;&#x5907;&#x3002; I/O&#x5DE5;&#x5177;&#x5305;&#x62EC;&#x5185;&#x6838;&#x63D0;&#x4F9B;&#x7684;Unix I/O<code>read, write</code>&#x51FD;&#x6570;&#xFF0C;C&#x63D0;&#x4F9B;&#x7684;&#x8BF8;&#x5982;<code>printf, scanf</code>&#x4E4B;&#x7C7B;&#x7684;&#x6807;&#x51C6;&#x5E93;I/O&#x51FD;&#x6570;&#xFF0C;&#x6216;&#x662F;&#x7528;&#x6237;&#x81EA;&#x5B9A;&#x4E49;&#x7684;I/O&#x51FD;&#x6570;&#x3002;</p>
+<h1 id="unix-io">Unix I/O</h1>
+<p>Unix&#x7684;&#x6587;&#x4EF6;&#x53EF;&#x4EE5;&#x770B;&#x6210;&#x662F;m&#x4E2A;&#x5B57;&#x8282;&#x7684;&#x5E8F;&#x5217;&#xFF0C;&#x4EFB;&#x4F55;I/O&#x8BBE;&#x5907;&#x90FD;&#x4F1A;&#x88AB;&#x770B;&#x6210;&#x6587;&#x4EF6;&#x3002; Linux&#x6587;&#x4EF6;&#x90FD;&#x6709;&#x4E00;&#x4E2A;&#x7C7B;&#x578B;&#xFF0C;&#x5305;&#x62EC;&#x4E86;</p>
+<ul>
+<li>&#x666E;&#x901A;&#x6587;&#x4EF6;&#xFF1A;&#x666E;&#x901A;&#x6587;&#x4EF6;&#x53C8;&#x53EF;&#x4EE5;&#x5206;&#x4E3A;&#x6587;&#x672C;&#x6587;&#x4EF6;&#x548C;&#x4E8C;&#x8FDB;&#x5236;&#x6587;&#x4EF6;&#x3002;&#x5176;&#x4E2D;&#x6587;&#x672C;&#x6587;&#x4EF6;&#x662F;&#x53EA;&#x5305;&#x542B;ASCII&#x6216;Unicode&#x5B57;&#x7B26;&#x7684;&#x6587;&#x4EF6;&#xFF0C;&#x4EE5;<code>\n(0xa)</code>&#x4F5C;&#x4E3A;&#x6BCF;&#x4E00;&#x884C;&#x7684;&#x7ED3;&#x675F;&#x3002;(Windows&#x4EE5;<code>\r\n(0xd 0xa)</code>&#x4E3A;&#x7ED3;&#x675F;)&#x3002;</li>
+<li>&#x76EE;&#x5F55;&#xFF1A;&#x76EE;&#x5F55;&#x4E5F;&#x662F;&#x6587;&#x4EF6;&#xFF01;&#x5305;&#x542B;&#x4E00;&#x7EC4;&#x94FE;&#x63A5;&#x7684;&#x6587;&#x4EF6;&#xFF0C;&#x6BCF;&#x4E2A;&#x94FE;&#x63A5;&#x5C06;&#x6587;&#x4EF6;&#x540D;&#x6620;&#x5C04;&#x5230;&#x6587;&#x4EF6;&#x3002;<code>.</code>&#x8868;&#x793A;&#x5F53;&#x524D;&#x76EE;&#x5F55;&#x81EA;&#x8EAB;&#x7684;&#x94FE;&#x63A5;&#xFF0C;<code>..</code>&#x8868;&#x793A;&#x5F53;&#x524D;&#x76EE;&#x5F55;&#x7236;&#x76EE;&#x5F55;&#x7684;&#x94FE;&#x63A5;&#x3002;</li>
+<li>&#x5957;&#x63A5;&#x5B57;&#xFF1A;&#x4E0E;&#x53E6;&#x4E00;&#x4E2A;&#x8FDB;&#x7A0B;&#x7F51;&#x7EDC;&#x901A;&#x4FE1;&#x7684;&#x6587;&#x4EF6;&#x3002;</li>
+</ul>
+<h2 id="&#x6253;&#x5F00;&#x548C;&#x5173;&#x95ED;&#x6587;&#x4EF6;">&#x6253;&#x5F00;&#x548C;&#x5173;&#x95ED;&#x6587;&#x4EF6;</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &#x6253;&#x5F00;&#x6587;&#x4EF6;: &#x5C06;filename&#x8F6C;&#x4E3A;&#x6587;&#x4EF6;&#x63CF;&#x8FF0;&#x7B26;&#xFF0C;&#x5E76;&#x8FD4;&#x56DE;&#x63CF;&#x8FF0;&#x7B26;&#x6570;&#x5B57;(&#x672A;&#x6253;&#x5F00;&#x7684;&#x6700;&#x5C0F;&#x63CF;&#x8FF0;&#x7B26;)&#x3002;</span></span><br><span class="line"><span class="comment">// flags: &#x8BBF;&#x95EE;&#x7684;&#x5F62;&#x5F0F;(&#x53EA;&#x8BFB;&#xFF0C;&#x53EA;&#x5199;&#xFF0C;&#x53EF;&#x8BFB;&#x53EF;&#x5199;)</span></span><br><span class="line"><span class="comment">// mode: &#x65B0;&#x6587;&#x4EF6;&#x7684;&#x8BBF;&#x95EE;&#x6743;&#x9650;</span></span><br><span class="line"><span class="comment">// return&#xFF1A;&#x6210;&#x529F;&#x5219;&#x8FD4;&#x56DE;&#x6587;&#x4EF6;&#x63CF;&#x8FF0;&#x7B26;&#xFF0C;&#x5931;&#x8D25;&#x8FD4;&#x56DE;-1(&#x6587;&#x4EF6;&#x4E0D;&#x5B58;&#x5728;&#x6216;&#x5176;&#x4ED6;)</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">open</span><span class="params">(<span class="keyword">char</span> * filename, <span class="keyword">int</span> flags, <span class="keyword">mode_t</span> mode)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// ------------------------------------------------</span></span></span><br><span class="line"><span class="function"><span class="comment">// &#x5173;&#x95ED;&#x6587;&#x4EF6;&#xFF1A;&#x5173;&#x95ED;&#x6307;&#x5B9A;&#x6587;&#x4EF6;&#x63CF;&#x8FF0;&#x7B26;&#x7684;&#x6587;&#x4EF6;</span></span></span><br><span class="line"><span class="function"><span class="comment">// return: &#x6210;&#x529F;&#x8FD4;&#x56DE;0&#xFF0C;&#x5931;&#x8D25;&#x8FD4;&#x56DE;-1(&#x5982;&#x5173;&#x95ED;&#x4E00;&#x4E2A;&#x5DF2;&#x7ECF;&#x5173;&#x95ED;&#x7684;&#x63CF;&#x8FF0;&#x7B26;)</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">close</span><span class="params">(<span class="keyword">int</span> fd)</span></span></span><br></pre></td></tr></table></figure>
+<p>&#x5728;Linux&#x7CFB;&#x7EDF;&#x4E2D;&#xFF0C;&#x6587;&#x4EF6;&#x63CF;&#x8FF0;&#x7B26;<code>0, 1, 2</code>&#x4EE5;&#x53CA;&#x88AB;&#x8BBE;&#x7F6E;&#x4E3A;&#x9ED8;&#x8BA4;&#x7684;&#x4E09;&#x4E2A;&#x503C;&#xFF1A;</p>
+<ul>
+<li>0&#xFF1A;&#x6807;&#x51C6;&#x8F93;&#x5165;(stdin)</li>
+<li>1&#xFF1A;&#x6807;&#x51C6;&#x8F93;&#x51FA;(stdout)</li>
+<li>2&#xFF1A;&#x6807;&#x51C6;&#x9519;&#x8BEF;(stderr)</li>
+</ul>
+<h2 id="&#x8BFB;&#x548C;&#x5199;&#x6587;&#x4EF6;">&#x8BFB;&#x548C;&#x5199;&#x6587;&#x4EF6;</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// return: &#x6210;&#x529F;&#x5219;&#x4E3A;&#x8BFB;&#x7684;&#x5B57;&#x8282;&#x6570;&#xFF0C;EOF&#x5219;&#x4E3A;0&#xFF0C;&#x5931;&#x8D25;&#x5219;&#x4E3A;-1&#x3002;</span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">read</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">void</span> *buf, <span class="keyword">size_t</span> n)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// return: &#x6210;&#x529F;&#x5219;&#x4E3A;&#x8BFB;&#x7684;&#x5B57;&#x8282;&#x6570;&#xFF0C;&#x5931;&#x8D25;&#x5219;&#x4E3A;-1&#x3002;</span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">write</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">const</span> <span class="keyword">void</span> *buf, <span class="keyword">size_t</span> n)</span></span>;</span><br></pre></td></tr></table></figure>
+<p><strong>&#x4E0D;&#x8DB3;&#x503C;</strong>&#x662F;&#x6307;&#x8BFB;&#x548C;&#x5199;&#x4F20;&#x9001;&#x7684;&#x5B57;&#x8282;&#x6BD4;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x8981;&#x6C42;&#x7684;&#x5C11;&#x3002;&#x53EF;&#x80FD;&#x51FA;&#x73B0;&#x7684;&#x539F;&#x56E0;&#x5305;&#x62EC;&#xFF1A;</p>
+<ul>
+<li>&#x8BFB;&#x7684;&#x65F6;&#x5019;&#x51FA;&#x73B0;&#x4E86;EOF&#x3002;&#x6CE8;&#x610F;&#xFF0C;&#x5982;&#x679C;&#x5269;&#x4F59;&#x7684;&#x6587;&#x4EF6;&#x5B57;&#x8282;&#x6570;&#x5C0F;&#x4E8E;&#x8981;&#x6C42;&#x7684;&#x5B57;&#x8282;&#x6570;&#xFF0C;<code>read</code>&#x51FD;&#x6570;&#x4F1A;&#x5148;&#x8FD4;&#x56DE;&#x80FD;&#x591F;&#x8BFB;&#x53D6;&#x7684;&#x6700;&#x591A;&#x5B57;&#x8282;&#x6570;&#xFF0C;&#x4E0B;&#x4E00;&#x6B21;<code>read</code>&#x65F6;&#x624D;&#x8FD4;&#x56DE;0&#x3002;</li>
+<li>&#x4ECE;&#x7EC8;&#x7AEF;&#x8BFB;&#x6587;&#x672C;&#x884C;&#xFF1A;&#x6BCF;&#x4E2A;<code>read</code>&#x51FD;&#x6570;&#x4F20;&#x9001;&#x4E00;&#x4E2A;&#x6587;&#x672C;&#x884C;&#x3002;</li>
+<li>&#x8BFB;&#x548C;&#x5199;&#x7F51;&#x7EDC;&#x5957;&#x63A5;&#x5B57;&#xFF1B;&#x53EF;&#x80FD;&#x51FA;&#x73B0;&#x7531;&#x4E8E;&#x7F51;&#x7EDC;&#x5EF6;&#x8FDF;&#x5BFC;&#x81F4;&#x7684;&#x4E0D;&#x8DB3;</li>
+</ul>
+<h2 id="&#x5176;&#x4ED6;&#x64CD;&#x4F5C;">&#x5176;&#x4ED6;&#x64CD;&#x4F5C;</h2>
+<h3 id="&#x6587;&#x4EF6;&#x5143;&#x6570;&#x636E;">&#x6587;&#x4EF6;&#x5143;&#x6570;&#x636E;</h3>
+<p>&#x901A;&#x8FC7;<code>stat</code>&#x51FD;&#x6570;&#x80FD;&#x591F;&#x8BFB;&#x53D6;&#x6587;&#x4EF6;&#x7684;&#x5143;&#x6570;&#x636E;&#x3002;&#x6587;&#x4EF6;&#x7684;&#x5143;&#x6570;&#x636E;&#x5305;&#x62EC;&#x6587;&#x4EF6;&#x7684;&#x5B57;&#x8282;&#x6570;&#x5927;&#x5C0F;<code>st_size</code>&#xFF0C;&#x6587;&#x4EF6;&#x7C7B;&#x578B;&#x548C;&#x6587;&#x4EF6;&#x8BBF;&#x95EE;&#x8BB8;&#x53EF;<code>st_mode</code>&#xFF0C;&#x4EE5;&#x53CA;&#x521B;&#x5EFA;&#x65F6;&#x95F4;&#x3001;&#x4FEE;&#x6539;&#x65F6;&#x95F4;&#x3001;&#x8BBF;&#x95EE;&#x65F6;&#x95F4;&#x7B49;&#x3002;</p>
+<h3 id="&#x8BFB;&#x53D6;&#x76EE;&#x5F55;&#x5185;&#x5BB9;">&#x8BFB;&#x53D6;&#x76EE;&#x5F55;&#x5185;&#x5BB9;</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">DIR *<span class="title">opendidr</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">closedir</span><span class="params">(DIR *dirp)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// &#x8BFB;&#x53D6;&#x76EE;&#x5F55;&#xFF0C;&#x6210;&#x529F;&#x5219;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x6307;&#x5411;&#x4E0B;&#x4E00;&#x76EE;&#x5F55;&#x9879;&#x7684;&#x6307;&#x9488;&#xFF0C;&#x6CA1;&#x6709;&#x5219;&#x8FD4;&#x56DE;NULL</span></span></span><br><span class="line"><span class="function">struct dirent *<span class="title">readdir</span><span class="params">(DIR *dirp)</span></span></span><br><span class="line"><span class="function"><span class="comment">// &#x76EE;&#x5F55;&#x9879;</span></span></span><br><span class="line"><span class="function">struct dirent</span>{</span><br><span class="line">    <span class="keyword">ino_t</span> d_ino; <span class="comment">// inode number</span></span><br><span class="line">    <span class="keyword">char</span> d_name[<span class="number">256</span>]; <span class="comment">// filename</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<h2 id="&#x5171;&#x4EAB;&#x6587;&#x4EF6;">&#x5171;&#x4EAB;&#x6587;&#x4EF6;</h2>
+<p>&#x8981;&#x4E86;&#x89E3;Linux&#x7684;&#x6587;&#x4EF6;&#x7EC4;&#x7EC7;&#x65B9;&#x5F0F;&#xFF0C;&#x9700;&#x8981;&#x5148;&#x4E86;&#x89E3;&#x4E09;&#x4E2A;&#x6982;&#x5FF5;</p>
+<ul>
+<li>&#x63CF;&#x8FF0;&#x7B26;&#x8868;&#xFF1A;&#x6BCF;&#x4E2A;&#x8FDB;&#x7A0B;&#x6709;&#x72EC;&#x7ACB;&#x7684;&#x63CF;&#x8FF0;&#x7B26;&#x8868;&#xFF0C;&#x8868;&#x793A;&#x8FDB;&#x7A0B;&#x6253;&#x5F00;&#x7684;&#x6587;&#x4EF6;&#x63CF;&#x8FF0;&#x7B26;&#x3002;</li>
+<li>&#x6253;&#x5F00;&#x6587;&#x4EF6;&#x8868;&#xFF1A;&#x6240;&#x6709;&#x8FDB;&#x7A0B;&#x5171;&#x4EAB;&#x3002;&#x5305;&#x542B;&#x6587;&#x4EF6;&#x4F4D;&#x7F6E;&#xFF0C;<strong>&#x5F15;&#x7528;&#x8BA1;&#x6570;</strong>&#x4EE5;&#x53CA;&#x6307;&#x5411;v-node&#x7684;&#x6307;&#x9488;&#xFF0C;&#x53EA;&#x6709;&#x5F15;&#x7528;&#x8BA1;&#x6570;&#x4E3A;0&#x7684;&#x6587;&#x4EF6;&#x8868;&#x9879;&#x624D;&#x4F1A;&#x88AB;&#x5220;&#x9664;&#x3002;&#x6CE8;&#x610F;&#xFF0C;<strong>&#x540C;&#x4E00;&#x4E2A;&#x6587;&#x4EF6;&#x53EF;&#x80FD;&#x5728;&#x6587;&#x4EF6;&#x8868;&#x4E2D;&#x6709;&#x591A;&#x4E2A;&#x6761;&#x76EE;</strong>&#x3002;</li>
+<li>v-node&#x8868;&#xFF1A;&#x6240;&#x6709;&#x8FDB;&#x7A0B;&#x5171;&#x4EAB;&#x3002;&#x6BCF;&#x4E2A;&#x6587;&#x4EF6;<strong>&#x6709;&#x4E14;&#x53EA;&#x6709;&#x4E00;&#x4E2A;</strong>&#x8868;&#x9879;&#xFF0C;&#x4E3A;&#x88AB;&#x6253;&#x5F00;&#x7684;&#x6587;&#x4EF6;&#x4E5F;&#x6709;&#x3002;&#x4E3B;&#x8981;&#x4FE1;&#x606F;&#x4E3A;<code>stat</code>&#x7ED3;&#x6784;&#x5305;&#x542B;&#x7684;&#x4FE1;&#x606F;&#x3002;</li>
+</ul>
+<p><img src="/CSAPP-10-System-Level-I-O/1.png" alt="file-system"></p>
+<p>&#x8C03;&#x7528;&#x4E24;&#x6B21;<code>open</code>&#x51FD;&#x6570;&#x53EF;&#x4EE5;&#x5728;&#x6253;&#x5F00;&#x6587;&#x4EF6;&#x8868;&#x4E2D;&#x521B;&#x5EFA;&#x4E24;&#x4E2A;&#x4E0D;&#x540C;&#x7684;&#x6761;&#x76EE;&#xFF0C;&#x5E76;&#x7531;&#x4E24;&#x4E2A;&#x4E0D;&#x540C;&#x7684;&#x6587;&#x4EF6;&#x63CF;&#x8FF0;&#x7B26;&#x6307;&#x5411;&#x5B83;&#x4EEC;&#xFF0C;&#x4E24;&#x4E2A;&#x6587;&#x4EF6;&#x63CF;&#x8FF0;&#x7B26;&#x4E92;&#x76F8;&#x72EC;&#x7ACB;&#x3002;&#x4F46;&#x662F;&#x6253;&#x5F00;&#x6587;&#x4EF6;&#x8868;&#x7684;&#x4E24;&#x4E2A;&#x6761;&#x76EE;&#x6307;&#x5411;&#x540C;&#x4E00;&#x4E2A;v-node&#x8868;&#x9879;&#x3002; <img src="/CSAPP-10-System-Level-I-O/2.png" alt="file-system2"></p>
+<p>&#x7236;&#x8FDB;&#x7A0B;&#x8C03;&#x7528;<code>fork</code>&#x540E;&#xFF0C;&#x5B50;&#x8FDB;&#x7A0B;&#x4F1A;&#x62E5;&#x6709;&#x7236;&#x8FDB;&#x7A0B;&#x7684;&#x63CF;&#x8FF0;&#x7B26;&#x526F;&#x672C;&#xFF0C;&#x6307;&#x5411;&#x6253;&#x5F00;&#x6587;&#x4EF6;&#x8868;&#x4E2D;&#x7684;&#x76F8;&#x540C;&#x6761;&#x76EE;&#xFF0C;&#x5E76;&#x4F7F;&#x5176;&#x5F15;&#x7528;&#x8BA1;&#x6570;&#x52A0;&#x4E00;&#x3002;</p>
+<p><img src="/CSAPP-10-System-Level-I-O/3.png" alt="file-system3"></p>
+<p>&#x91CD;&#x5B9A;&#x5411;&#x64CD;&#x4F5C;&#x80FD;&#x591F;&#x5C06;&#x6807;&#x51C6;&#x8F93;&#x5165;&#x8F93;&#x51FA;&#x548C;&#x6587;&#x4EF6;&#x8FDB;&#x884C;&#x8054;&#x7CFB;&#x3002;&#x5728;Shell&#x4E2D;&#xFF0C;&gt;&#x8868;&#x793A;&#x8F93;&#x51FA;&#x91CD;&#x65B0;&#xFF0C;&lt;&#x8868;&#x793A;&#x8F93;&#x5165;&#x91CD;&#x5B9A;&#x5411;&#x3002;&#x5982;&#x4E0B;&#x6240;&#x793A;&#xFF1A;</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">command &gt; foo.txt // &#x8986;&#x76D6;&#x7684;&#x65B9;&#x5F0F;&#x628A;stdout&#x8F93;&#x51FA;&#x5230;file</span><br><span class="line">command &gt;&gt; foo.txt // &#x4EE5;&#x8FFD;&#x52A0;&#x7684;&#x65B9;&#x5F0F;&#x628A;stdout&#x8F93;&#x51FA;&#x5230;file</span><br><span class="line">command &gt; foo1.txt 2&gt;foo2.txt // &#x5206;&#x522B;&#x5BF9;stdout&#x548C;stderr&#x8FDB;&#x884C;&#x91CD;&#x5B9A;&#x5411;</span><br><span class="line">command &gt;foo.txt 2&gt;&amp;1 // &#x5C06;stdout&#x548C;stderr&#x8F93;&#x51FA;&#x5230;&#x540C;&#x4E00;&#x4E2A;&#x6587;&#x4EF6;</span><br><span class="line">command &gt;/dev/null // &#x4E0D;&#x4FDD;&#x5B58;&#x8F93;&#x51FA;&#x7ED3;&#x679C;</span><br><span class="line">command &lt; foo.txt // &#x5C06;foo.txt &#x4F5C;&#x4E3A;command&#x7684;&#x8F93;&#x5165;</span><br></pre></td></tr></table></figure>
+<p>C&#x8BED;&#x8A00;&#x4E2D;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;<code>dup2</code>&#x51FD;&#x6570;&#x590D;&#x5236;<strong>&#x8868;&#x9879;</strong>&#xFF0C;&#x4ECE;&#x800C;&#x5B9E;&#x73B0;&#x91CD;&#x5B9A;&#x5411;&#x3002;&#x4F8B;&#x5982;<code>dup2(4,1)</code>&#x7684;&#x7ED3;&#x679C;&#x5982;&#x4E0B;</p>
+<p><img src="/CSAPP-10-System-Level-I-O/6.png" alt="redirction-res"></p>
+<h2 id="&#x6807;&#x51C6;io&#x5E93;">&#x6807;&#x51C6;I/O&#x5E93;</h2>
+<p>&#x5F15;&#x5165;&#x4E86;&#x7F13;&#x51B2;&#x533A;&#x7684;&#x6982;&#x5FF5;&#xFF0C;&#x4F8B;&#x5982;<code>getc</code>&#x6BCF;&#x6B21;&#x8FD4;&#x56DE;&#x6587;&#x4EF6;&#x7684;&#x4E0B;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;&#xFF0C;&#x800C;&#x5B9E;&#x9645;&#x4E0A;&#x5176;&#x901A;&#x8FC7;&#x8C03;&#x7528;&#x5E95;&#x5C42;&#x7684;<code>read</code>&#x6765;&#x586B;&#x5145;&#x7F13;&#x51B2;&#x533A;&#xFF0C;&#x51CF;&#x5C11;&#x540E;&#x7EED;&#x8C03;&#x7528;<code>read</code>&#x7684;&#x6B21;&#x6570;&#x3002; &#x6B64;&#x5916;&#xFF0C;<code>scanf</code>&#x4E4B;&#x7C7B;&#x7684;&#x51FD;&#x6570;&#x662F;&#x9488;&#x5BF9;&#x6587;&#x672C;&#x6587;&#x4EF6;&#x8FDB;&#x884C;&#x8BFB;&#x53D6;&#x7684;&#xFF0C;&#x4E0D;&#x80FD;&#x5C06;&#x5176;&#x7528;&#x6765;&#x8BFB;&#x53D6;&#x4E8C;&#x8FDB;&#x5236;&#x6587;&#x4EF6;&#x3002;</p>
+<p><img src="/CSAPP-10-System-Level-I-O/5.png" alt="buffer-io"></p>
+<h1 id="&#x603B;&#x7ED3;">&#x603B;&#x7ED3;</h1>
+<p>&#x4E0D;&#x540C;&#x7684;I/O&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;&#x6709;&#x7740;&#x4E0D;&#x540C;&#x7684;&#x4F18;&#x7F3A;&#x70B9;&#x3002;&#x5BF9;&#x4E8E;&#x6700;&#x5E95;&#x5C42;&#x7684;Unix I/O&#xFF0C;&#x5176;&#x4F18;&#x70B9;&#x5728;&#x4E8E;&#x662F;&#x5F02;&#x6B65;&#x4FE1;&#x53F7;&#x5B89;&#x5168;&#x7684;&#xFF0C;&#x9002;&#x5408;&#x7528;&#x4E8E;&#x4FE1;&#x53F7;&#x5904;&#x7406;&#x51FD;&#x6570;&#x4E2D;&#x3002;&#x4F46;&#x662F;&#x5176;&#x6CA1;&#x6709;&#x8BBE;&#x7F6E;&#x7F13;&#x51B2;&#x533A;&#x6216;&#x8005;&#x5BF9;&#x4E0D;&#x8DB3;&#x503C;&#x8FDB;&#x884C;&#x5904;&#x7406;&#xFF0C;&#x8C03;&#x7528;&#x7684;&#x6548;&#x7387;&#x8F83;&#x4F4E;&#x3002; &#x800C;&#x6807;&#x51C6;&#x7684;I/O&#x5B9E;&#x73B0;&#xFF0C;&#x5176;&#x5904;&#x7406;&#x4E86;&#x4E0D;&#x8DB3;&#x503C;&#x5E76;&#x8BBE;&#x7F6E;&#x4E86;&#x7F13;&#x51B2;&#x533A;&#xFF0C;&#x51CF;&#x5C11;&#x4E86;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#xFF0C;&#x4ECE;&#x800C;&#x63D0;&#x9AD8;&#x4E86;&#x6548;&#x7387;&#x3002;&#x4F46;&#x662F;&#x5176;&#x4E0D;&#x662F;&#x5F02;&#x6B65;&#x4FE1;&#x53F7;&#x5B89;&#x5168;&#x7684;&#xFF1B;&#x6B64;&#x5916;&#x5176;&#x4E0D;&#x80FD;&#x5F88;&#x597D;&#x7684;&#x5904;&#x7406;&#x7F51;&#x7EDC;&#x901A;&#x4FE1;&#x8FC7;&#x7A0B;&#x4E2D;&#x7684;I/O&#x8BFB;&#x5199;&#x3002; &#x5B9E;&#x9645;&#x64CD;&#x4F5C;&#x4E2D;&#xFF0C;&#x9700;&#x8981;&#x6839;&#x636E;&#x9700;&#x6C42;&#xFF0C;&#x57FA;&#x4E8E;Unix I/O&#x8BBE;&#x8BA1;&#x7B26;&#x5408;&#x8981;&#x6C42;&#x7684;I/O&#x51FD;&#x6570;&#x3002;</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/CSAPP-8-Exceptional-Control-Flow/" rel="prev" title="CSAPP(8): Exceptional Control Flow">
+      <i class="fa fa-chevron-left"></i> CSAPP(8): Exceptional Control Flow
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#unix-io"><span class="nav-number">2.</span> <span class="nav-text">Unix I&#x2F;O</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%BC%80%E5%92%8C%E5%85%B3%E9%97%AD%E6%96%87%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">打开和关闭文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E5%92%8C%E5%86%99%E6%96%87%E4%BB%B6"><span class="nav-number">2.2.</span> <span class="nav-text">读和写文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">其他操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6"><span class="nav-number">2.4.</span> <span class="nav-text">共享文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E5%87%86io%E5%BA%93"><span class="nav-number">2.5.</span> <span class="nav-text">标准I&#x2F;O库</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhikai"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Zhikai</p>
+  <div class="site-description" itemprop="description">Have fun</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhikai</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
