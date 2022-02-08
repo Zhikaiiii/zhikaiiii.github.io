@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"hitsresultsfoundin{time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="h1 { border-bottom: none }   h2 { border-bottom: none }">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAPPLab(5): Shell Lab">
+<meta property="og:url" content="http://example.com/CSAPPLab-5-Shell-Lab/index.html">
+<meta property="og:site_name" content="Zhikaiiii&#39;s Page">
+<meta property="og:description" content="h1 { border-bottom: none }   h2 { border-bottom: none }">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-07T07:49:09.000Z">
+<meta property="article:modified_time" content="2022-02-07T09:05:11.600Z">
+<meta property="article:author" content="Zhikai">
+<meta property="article:tag" content="CSAPP">
+<meta property="article:tag" content="课程学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/CSAPPLab-5-Shell-Lab/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CSAPPLab(5): Shell Lab | Zhikaiiii's Page</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Zhikaiiii's Page</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">C.O.Y.G</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/CSAPPLab-5-Shell-Lab/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Zhikai">
+      <meta itemprop="description" content="Have fun">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhikaiiii's Page">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CSAPPLab(5): Shell Lab
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-02-07 15:49:09 / 修改时间：17:05:11" itemprop="dateCreated datePublished" datetime="2022-02-07T15:49:09+08:00">2022-02-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">课程学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <style> h1 { border-bottom: none } </style>
+<style> h2 { border-bottom: none } </style>
+<span id="more"></span>
+<h1 id="&#x5B9E;&#x9A8C;&#x4ECB;&#x7ECD;">&#x5B9E;&#x9A8C;&#x4ECB;&#x7ECD;</h1>
+<p>&#x672C;&#x6B21;&#x5B9E;&#x9A8C;&#x9700;&#x8981;&#x5B9E;&#x73B0;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;Shell&#x7A0B;&#x5E8F;<code>tsh</code>&#xFF0C;&#x8BE5;Shell&#x7A0B;&#x5E8F;&#x5305;&#x542B;&#x5185;&#x7F6E;&#x547D;&#x4EE4;<code>quit</code>(&#x9000;&#x51FA;)&#xFF0C;<code>jobs</code>(&#x5217;&#x51FA;&#x8FDB;&#x7A0B;),<code>fg</code>(&#x5C06;&#x4E00;&#x4E2A;&#x8FDB;&#x7A0B;&#x8F6C;&#x6362;&#x4E3A;&#x524D;&#x53F0;&#x8FD0;&#x884C;), <code>bg</code>(&#x5C06;&#x4E00;&#x4E2A;&#x8FDB;&#x7A0B;&#x5728;&#x540E;&#x53F0;&#x7EE7;&#x7EED;&#x8FD0;&#x884C;)&#xFF0C;&#x6B64;&#x5916;&#x8FD8;&#x80FD;&#x8FD0;&#x884C;&#x5916;&#x90E8;&#x7684;&#x7A0B;&#x5E8F;&#x548C;&#x547D;&#x4EE4;&#x3002;&#x9664;&#x6B64;&#x4E4B;&#x5916;&#xFF0C;&#x5176;&#x8FD8;&#x80FD;&#x6B63;&#x5E38;&#x7684;&#x5904;&#x7406;<code>SIGINT, SIGTSTP, SIGCHLD, SIGCONT</code>&#x7B49;&#x4FE1;&#x53F7;&#x3002; &#x5B9E;&#x9A8C;&#x7684;&#x8BC4;&#x4F30;&#x5171;&#x6709;16&#x4E2A;&#x5C0F;&#x4EFB;&#x52A1;&#xFF0C;&#x4EFB;&#x52A1;<code>i</code>&#x53EF;&#x4EE5;&#x901A;&#x8FC7;<code>make test$i</code>&#x5FEB;&#x901F;&#x67E5;&#x770B;&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#xFF0C;&#x800C;<code>make rtest$i</code>&#x53EF;&#x4EE5;&#x67E5;&#x770B;&#x53C2;&#x8003;&#x7B54;&#x6848;&#x7684;&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#xFF0C;&#x4E5F;&#x53EF;&#x4E5F;&#x76F4;&#x63A5;&#x5728;<code>tshref.out</code>&#x6587;&#x4EF6;&#x4E2D;&#x76F4;&#x63A5;&#x67E5;&#x770B;&#x7ED3;&#x679C;&#x3002; &#x5B9E;&#x9A8C;&#x7684;&#x6240;&#x6709;&#x4EE3;&#x7801;&#x90FD;&#x5728;<code>tsh.c</code>&#x4E2D;&#x5B8C;&#x6210;&#xFF0C;&#x53E6;&#x5916;&#x6709;&#x56DB;&#x4E2A;&#x5C0F;&#x6D4B;&#x8BD5;&#x7A0B;&#x5E8F;&#xFF0C;&#x5206;&#x522B;&#x4E3A;</p>
+<ul>
+<li><code>myspin.c</code>: &#x4F11;&#x7720;<code>i</code>&#x79D2;&#x540E;&#x7ED3;&#x675F;&#x8FDB;&#x7A0B;</li>
+<li><code>mysplit.c</code>: &#x521B;&#x5EFA;&#x5B50;&#x8FDB;&#x7A0B;&#x5E76;&#x4F11;&#x7720;<code>i</code>&#x79D2;&#x540E;&#x7ED3;&#x675F;&#xFF0C;&#x7236;&#x8FDB;&#x7A0B;&#x7B49;&#x5F85;&#x5B50;&#x8FDB;&#x7A0B;&#x7684;&#x7ED3;&#x675F;&#x3002;</li>
+<li><code>mystop.c</code>: &#x4F11;&#x7720;<code>i</code>&#x79D2;&#x540E;&#xFF0C;&#x53D1;&#x9001;<code>SIGTSTP</code>&#x4FE1;&#x53F7;&#x7ED9;&#x8FDB;&#x7A0B;&#x4F7F;&#x5176;&#x505C;&#x6B62;&#x3002;</li>
+<li><code>myint.c</code>: &#x4F11;&#x7720;<code>i</code>&#x79D2;&#x540E;&#xFF0C;&#x53D1;&#x9001;<code>SIGINT</code>&#x4FE1;&#x53F7;&#x7ED9;&#x8FDB;&#x7A0B;&#x4F7F;&#x5176;&#x7EC8;&#x6B62;&#x3002;</li>
+</ul>
+<h1 id="&#x89E3;&#x7B54;">&#x89E3;&#x7B54;</h1>
+<h2 id="&#x6574;&#x4F53;&#x6D41;&#x7A0B;">&#x6574;&#x4F53;&#x6D41;&#x7A0B;</h2>
+<p>&#x8BE5;Shell&#x7A0B;&#x5E8F;&#x7684;&#x6574;&#x4F53;&#x6D41;&#x7A0B;&#x4E3A;&#xFF1A;&#x5728;&#x4E3B;&#x51FD;&#x6570;<code>main</code>&#x7684;&#x5FAA;&#x73AF;&#x4E2D;&#xFF0C;&#x6BCF;&#x6B21;&#x4ECE;<code>stdin</code>&#x83B7;&#x53D6;&#x8F93;&#x5165;&#x7684;&#x547D;&#x4EE4;&#xFF0C;&#x7528;<code>eval</code>&#x51FD;&#x6570;&#x8FDB;&#x884C;&#x5904;&#x7406;&#x3002;<code>eval</code>&#x51FD;&#x6570;&#x9996;&#x5148;&#x5BF9;&#x8F93;&#x5165;&#x7684;&#x547D;&#x4EE4;&#x8C03;&#x7528;<code>parseline</code>&#x51FD;&#x6570;&#x8FDB;&#x884C;&#x89E3;&#x6790;&#xFF0C;&#x8F6C;&#x6362;&#x4E3A;<code>argv</code>&#x7684;&#x53C2;&#x6570;&#x5217;&#x8868;&#x5F62;&#x5F0F;&#xFF0C;&#x5176;&#x4E2D;<code>argv[0]</code>&#x4E3A;&#x547D;&#x4EE4;&#xFF0C;&#x5E76;&#x6839;&#x636E;<code>&amp;</code>&#x5224;&#x65AD;&#x7A0B;&#x5E8F;&#x662F;&#x5426;&#x5728;&#x540E;&#x53F0;&#x8FD0;&#x884C;&#x3002; &#x82E5;&#x4EFB;&#x52A1;&#x5728;&#x540E;&#x53F0;&#x8FD0;&#x884C;&#xFF0C;&#x51FD;&#x6570;&#x4F1A;&#x8F93;&#x51FA;&#x5BF9;&#x5E94;&#x7684;&#x8FDB;&#x7A0B;&#x4FE1;&#x606F;&#x3002;&#x5982;&#x679C;&#x5728;&#x524D;&#x53F0;&#x8FDB;&#x884C;&#xFF0C;&#x5219;&#x8C03;&#x7528;<code>waitfg</code>&#x7B49;&#x5F85;&#x4EFB;&#x52A1;&#x7684;&#x5B8C;&#x6210;&#x3002;</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">waitfg</span><span class="params">(<span class="keyword">pid_t</span> pid)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">while</span> (pid == fgpid(jobs))</span><br><span class="line">    {</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<h2 id="&#x4EFB;&#x52A1;&#x7BA1;&#x7406;">&#x4EFB;&#x52A1;&#x7BA1;&#x7406;</h2>
+<p>Shell&#x7A0B;&#x5E8F;&#x9700;&#x8981;&#x5BF9;&#x73B0;&#x5728;&#x7684;&#x8FDB;&#x7A0B;&#x548C;&#x4EFB;&#x52A1;&#x8FDB;&#x884C;&#x7BA1;&#x7406;&#xFF0C;&#x56E0;&#x6B64;&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E2A;<code>job_t</code>&#x7684;&#x7ED3;&#x6784;&#x4F53;&#xFF0C;&#x5176;&#x7ED3;&#x6784;&#x5982;&#x4E0B;&#xFF1A;</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">job_t</span> {</span>              <span class="comment">/* The job struct */</span></span><br><span class="line">    <span class="keyword">pid_t</span> pid;              <span class="comment">/* job PID */</span></span><br><span class="line">    <span class="keyword">int</span> jid;                <span class="comment">/* job ID [1, 2, ...] */</span></span><br><span class="line">    <span class="keyword">int</span> state;              <span class="comment">/* UNDEF, BG, FG, or ST */</span></span><br><span class="line">    <span class="keyword">char</span> cmdline[MAXLINE];  <span class="comment">/* command line */</span></span><br><span class="line">};</span><br></pre></td></tr></table></figure>
+<p>&#x6B64;&#x5916;&#xFF0C;&#x8FD8;&#x63D0;&#x4F9B;&#x4E86;&#x6DFB;&#x52A0;&#x3001;&#x5220;&#x9664;&#x4EFB;&#x52A1;&#xFF0C;&#x83B7;&#x53D6;&#x4EFB;&#x52A1;&#x4FE1;&#x606F;&#x7B49;&#x51FD;&#x6570;&#x65B9;&#x4FBF;&#x8C03;&#x7528;&#x3002;</p>
+<h2 id="&#x547D;&#x4EE4;&#x6267;&#x884C;">&#x547D;&#x4EE4;&#x6267;&#x884C;</h2>
+<p>&#x547D;&#x4EE4;&#x6267;&#x884C;&#x90E8;&#x5206;&#x5206;&#x4E3A;&#x4E24;&#x90E8;&#x5206;&#xFF0C;&#x5185;&#x7F6E;&#x547D;&#x4EE4;&#x548C;&#x5176;&#x4ED6;&#x547D;&#x4EE4;&#x3002; &#x5185;&#x7F6E;&#x547D;&#x4EE4;&#x57FA;&#x4E8E;<code>builtin_cmd</code>&#x51FD;&#x6570;&#x5B8C;&#x6210;&#xFF0C;&#x901A;&#x8FC7;&#x5B57;&#x7B26;&#x4E32;&#x6BD4;&#x8F83;&#x5224;&#x65AD;&#x5BF9;&#x5E94;&#x9700;&#x8981;&#x6267;&#x884C;&#x7684;&#x51FD;&#x6570;&#xFF0C;&#x5982;<code>jobs</code>&#x547D;&#x4EE4;&#x5BF9;&#x5E94;<code>listjobs</code>&#x51FD;&#x6570;&#xFF0C;<code>fg,bg</code>&#x547D;&#x4EE4;&#x6267;&#x884C;<code>do_bgfg</code>&#x51FD;&#x6570;&#x3002; <code>do_bgfg</code>&#x51FD;&#x6570;&#x9700;&#x8981;&#x5B8C;&#x6210;&#x5BF9;&#x6307;&#x5B9A;&#x4EFB;&#x52A1;/&#x8FDB;&#x7A0B;&#x72B6;&#x6001;&#x7684;&#x5207;&#x6362;&#xFF0C;&#x4F7F;&#x8FDB;&#x7A0B;&#x7EE7;&#x7EED;&#x8FD0;&#x884C;(&#x539F;&#x5148;&#x7684;&#x72B6;&#x6001;&#x53EF;&#x80FD;&#x662F;&#x505C;&#x6B62;&#x6216;&#x8FD0;&#x884C;)&#x3002;&#x56E0;&#x6B64;&#xFF0C;&#x9700;&#x8981;&#x53D1;&#x9001;<code>SIGCONT</code>&#x4FE1;&#x53F7;&#x7ED9;&#x8FDB;&#x7A0B;&#xFF0C;&#x5E76;&#x76F8;&#x5E94;&#x7684;&#x4FEE;&#x6539;&#x4EFB;&#x52A1;&#x72B6;&#x6001;&#x3002;</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!<span class="built_in">strcmp</span>(argv[<span class="number">0</span>], <span class="string">&quot;bg&quot;</span>))</span><br><span class="line">{</span><br><span class="line">    kill(-(curr_job-&gt;pid), SIGCONT);</span><br><span class="line">    curr_job-&gt;state = BG;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[%d] (%d) %s&quot;</span>,curr_job-&gt;jid, curr_job-&gt;pid, curr_job-&gt;cmdline);</span><br><span class="line">}</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">{</span><br><span class="line">    kill(-(curr_job-&gt;pid), SIGCONT);</span><br><span class="line">    curr_job-&gt;state = FG;</span><br><span class="line">    waitfg(curr_job-&gt;pid);</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>&#x5176;&#x4ED6;&#x547D;&#x4EE4;&#x901A;&#x8FC7;<code>fork</code>&#x51FD;&#x6570;&#x548C;<code>exceve</code>&#x51FD;&#x6570;&#x914D;&#x5408;&#x4F7F;&#x7528;&#x5B8C;&#x6210;&#x3002;&#x6CE8;&#x610F;&#xFF0C;&#x4E3A;&#x4E86;&#x4FDD;&#x8BC1;&#x540E;&#x9762;&#x7ED9;&#x8FDB;&#x7A0B;&#x53D1;&#x9001;&#x4FE1;&#x53F7;&#x65F6;&#xFF0C;&#x8FDB;&#x7A0B;&#x7684;&#x5B50;&#x8FDB;&#x7A0B;&#x80FD;&#x591F;&#x6536;&#x5230;&#x4FE1;&#x53F7;&#xFF0C;&#x9700;&#x8981;&#x5BF9;&#x8FDB;&#x7A0B;&#x7684;&#x8FDB;&#x7A0B;&#x7EC4;ID&#x8FDB;&#x884C;&#x8BBE;&#x7F6E;&#x3002;&#x5982;&#x4E0B;</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// excute cmd</span></span><br><span class="line"><span class="keyword">if</span>((pid = fork()) == <span class="number">0</span>){</span><br><span class="line">    sigprocmask(SIG_SETMASK, &amp;prev_mask, <span class="literal">NULL</span>); <span class="comment">// unblock SIGCHLD</span></span><br><span class="line">    setpgid(<span class="number">0</span>, <span class="number">0</span>); <span class="comment">// set pgid</span></span><br><span class="line">    <span class="keyword">if</span>(execve(argv[<span class="number">0</span>], argv, environ) &lt; <span class="number">0</span>){</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s: Command not found\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<h2 id="&#x4FE1;&#x53F7;&#x5904;&#x7406;">&#x4FE1;&#x53F7;&#x5904;&#x7406;</h2>
+<p>&#x4E00;&#x5171;&#x9700;&#x8981;&#x5B8C;&#x6210;&#x4E09;&#x4E2A;&#x4FE1;&#x53F7;&#x5904;&#x7406;&#x51FD;&#x6570;&#xFF0C;&#x5728;&#x4FE1;&#x53F7;&#x5904;&#x7406;&#x51FD;&#x6570;&#x4E2D;&#x5F00;&#x59CB;&#x65F6;&#x5148;&#x5BF9;&#x6240;&#x6709;&#x4FE1;&#x53F7;&#x8FDB;&#x884C;&#x4E86;&#x963B;&#x585E;&#xFF0C;&#x907F;&#x514D;&#x4FE1;&#x53F7;&#x5904;&#x7406;&#x51FD;&#x6570;&#x88AB;&#x4E2D;&#x65AD;&#xFF0C;&#x51FD;&#x6570;&#x7ED3;&#x675F;&#x540E;&#x53D6;&#x6D88;&#x963B;&#x585E;&#x3002; &#x5B9E;&#x73B0;&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#x8FD8;&#x6709;&#x51E0;&#x4E2A;&#x7EC6;&#x8282;&#x3002;&#x9996;&#x5148;&#x662F;&#x6700;&#x5F00;&#x59CB;&#xFF0C;&#x4EFB;&#x52A1;&#x7684;&#x5220;&#x9664;<code>deletejob</code>&#x5728;<code>sigint_handler</code>&#x8C03;&#x7528;&#xFF0C;&#x8FDB;&#x7A0B;&#x6682;&#x505C;&#x7684;&#x72B6;&#x6001;&#x4FEE;&#x6539;<code>curr_job-&gt;state = ST;</code>&#x5728;<code>sigtstp_handler</code>&#x4E2D;&#x5B8C;&#x6210;&#x3002;&#x4F46;&#x662F;&#x8FD9;&#x6837;&#x505A;&#x7684;&#x95EE;&#x9898;&#x5728;&#x4E8E;&#xFF1A;1) &#x5B9E;&#x9645;&#x4E0A;&#x8C03;&#x7528;&#x8FD9;&#x4E24;&#x4E2A;&#x51FD;&#x6570;&#x540E;&#xFF0C;&#x8FDB;&#x7A0B;&#x505C;&#x6B62;&#x6216;&#x7EC8;&#x6B62;&#x65F6;&#xFF0C;&#x4F1A;&#x7ED9;&#x7236;&#x8FDB;&#x7A0B;&#x53D1;&#x9001;&#x4E00;&#x4E2A;<code>SIGCHLD</code>&#x4FE1;&#x53F7;&#xFF0C;&#x4ECE;&#x800C;&#x8FDB;&#x5165;<code>sigchld_handler</code>&#x51FD;&#x6570;&#x3002;2) &#x5728;&#x6D4B;&#x8BD5;&#x6837;&#x4F8B;&#x4E2D;&#xFF0C;&#x5305;&#x542B;&#x4E86;&#x7531;&#x5916;&#x90E8;&#x7A0B;&#x5E8F;&#x53D1;&#x9001;&#x7684;<code>SIGINT</code>&#x548C;<code>SIGTSTP</code>&#x4FE1;&#x53F7;&#xFF0C;&#x8FD9;&#x6837;&#x7684;&#x4FE1;&#x53F7;&#x662F;&#x65E0;&#x6CD5;&#x88AB;Shell&#x7A0B;&#x5E8F;&#x6355;&#x6349;&#x7684;&#x3002;(&#x53C2;&#x8003;&#x53E6;&#x5916;&#x5F00;&#x4E00;&#x4E2A;bash&#x7EC8;&#x7AEF;&#xFF0C;&#x7136;&#x540E;<code>kill -20 xxx</code>)&#xFF0C;&#x4F46;&#x662F;&#x8FDB;&#x7A0B;&#x505C;&#x6B62;&#x6216;&#x7EC8;&#x6B62;&#x7684;<code>SIGCHLD</code>&#x4FE1;&#x53F7;&#x662F;&#x53EF;&#x4EE5;&#x88AB;&#x6355;&#x6349;&#x7684;&#xFF0C;&#x56E0;&#x6B64;&#x5C06;&#x5BF9;&#x5E94;&#x7684;<code>deletejob</code>&#x79FB;&#x5230;&#x4E86;<code>sigchld_handler</code>&#x51FD;&#x6570;&#x4E2D;&#x8FDB;&#x884C;&#x5904;&#x7406;&#x3002; &#x5176;&#x6B21;&#xFF0C;<code>sigchld_handler</code>&#x51FD;&#x6570;&#x4E2D;&#x7684;<code>waitpid</code>&#x4E0D;&#x80FD;&#x53EA;&#x8C03;&#x7528;&#x4E00;&#x6B21;&#xFF0C;&#x8FD9;&#x662F;&#x56E0;&#x4E3A;&#x5728;&#x5904;&#x7406;&#x65F6;&#x53EF;&#x80FD;&#x6709;&#x591A;&#x4E2A;&#x540C;&#x6837;&#x7684;&#x4FE1;&#x53F7;&#x5230;&#x8FBE;&#xFF0C;&#x4F46;&#x662F;&#x7531;&#x4E8E;&#x4FE1;&#x53F7;&#x7684;&#x975E;&#x6392;&#x961F;&#x673A;&#x5236;&#x5BFC;&#x81F4;&#x90E8;&#x5206;&#x4FE1;&#x53F7;&#x4E22;&#x5931;&#x3002;&#x56E0;&#x6B64;&#x9700;&#x8981;&#x7528;<code>while</code>&#x5FAA;&#x73AF;&#x4FDD;&#x8BC1;&#x6240;&#x6709;&#x7684;&#x5B50;&#x8FDB;&#x7A0B;&#x88AB;&#x56DE;&#x6536;&#x3002;&#x4F7F;&#x7528;<code>WNOHANG | WUNTRACED</code>&#x80FD;&#x591F;&#x83B7;&#x53D6;&#x6240;&#x6709;&#x7EC8;&#x6B62;&#x6216;&#x505C;&#x6B62;&#x7684;&#x5B50;&#x8FDB;&#x7A0B;ID&#xFF0C;&#x5982;&#x679C;&#x6CA1;&#x6709;&#x7684;&#x8BDD;&#x5219;&#x8FD4;&#x56DE;0&#x3002;</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sigchld_handler</span><span class="params">(<span class="keyword">int</span> sig)</span> </span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">sigset_t</span> mask, prev_mask;</span><br><span class="line">    sigfillset(&amp;mask);</span><br><span class="line">    sigprocmask(SIG_BLOCK, &amp;mask, &amp;prev_mask);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">pid_t</span> pid;</span><br><span class="line">    <span class="keyword">int</span> status;</span><br><span class="line">    <span class="keyword">while</span>((pid = waitpid(<span class="number">-1</span>, &amp;status, WNOHANG | WUNTRACED)) &gt; <span class="number">0</span>){</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// &#x88AB;&#x672A;&#x6355;&#x83B7;&#x7684;&#x4FE1;&#x53F7;&#x7EC8;&#x6B62;</span></span><br><span class="line">        <span class="keyword">if</span>(WIFSIGNALED(status)){</span><br><span class="line">            <span class="comment">// struct job_t * curr_job = getjobpid(jobs, pid);</span></span><br><span class="line">            <span class="keyword">int</span> jid = pid2jid(pid);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;Job [%d] (%d) terminated by signal 2\n&quot;</span>, jid, pid);</span><br><span class="line">            deletejob(jobs, pid);</span><br><span class="line">        }</span><br><span class="line">        <span class="comment">// &#x5224;&#x65AD;&#x8FDB;&#x7A0B;&#x505C;&#x6B62;&#x65F6;&#x7684;&#x5904;&#x7406;</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(WIFSTOPPED(status)){</span><br><span class="line">            struct <span class="keyword">job_t</span> * curr_job = getjobpid(jobs, pid);</span><br><span class="line">            <span class="keyword">int</span> jid = pid2jid(pid);</span><br><span class="line">            curr_job-&gt;state = ST;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;Job [%d] (%d) stopped by signal 20\n&quot;</span>, jid, pid);</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">else</span>{</span><br><span class="line">            deletejob(jobs, pid);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    sigprocmask(SIG_SETMASK, &amp;prev_mask, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>&#x6B64;&#x5916;&#xFF0C;&#x4E3A;&#x4E86;&#x9632;&#x6B62;&#x5728;<code>addjob</code>&#x6267;&#x884C;&#x4E4B;&#x524D;&#x5B50;&#x8FDB;&#x7A0B;&#x4EFB;&#x52A1;&#x5C31;&#x5DF2;&#x7ECF;&#x5B8C;&#x6210;&#xFF0C;&#x5BFC;&#x81F4;<code>deletejob</code>&#x7684;&#x8C03;&#x7528;&#x5728;<code>addjob</code>&#x4E4B;&#x524D;&#x3002;&#x9700;&#x8981;&#x5728;<code>addjob</code>&#x4E4B;&#x524D;&#x5BF9;<code>SIGCHLD</code>&#x4FE1;&#x53F7;&#x8FDB;&#x884C;&#x963B;&#x585E;&#xFF0C;&#x8C03;&#x7528;&#x5B8C;&#x6BD5;&#x540E;&#x518D;&#x53D6;&#x6D88;&#x963B;&#x585E;&#x3002;&#x540C;&#x65F6;&#xFF0C;&#x7531;&#x4E8E;<code>fork</code>&#x8FDB;&#x7A0B;&#x4F1A;&#x7EE7;&#x627F;&#x7236;&#x8FDB;&#x7A0B;&#x7684;&#x963B;&#x585E;&#x60C5;&#x51B5;&#xFF0C;&#x56E0;&#x6B64;<code>fork</code>&#x540E;&#x4E5F;&#x8981;&#x53D6;&#x6D88;&#x5BF9;<code>SIGCHLD</code>&#x7684;&#x963B;&#x585E;&#x3002;</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// block SIGCHLD</span></span><br><span class="line">sigprocmask(SIG_BLOCK, &amp;mask, &amp;prev_mask);</span><br><span class="line"><span class="comment">// excute cmd</span></span><br><span class="line"><span class="keyword">if</span>((pid = fork()) == <span class="number">0</span>){</span><br><span class="line">    sigprocmask(SIG_SETMASK, &amp;prev_mask, <span class="literal">NULL</span>); <span class="comment">// unblock SIGCHLD</span></span><br><span class="line">    setpgid(<span class="number">0</span>, <span class="number">0</span>); <span class="comment">// set pgid</span></span><br><span class="line">    <span class="keyword">if</span>(execve(argv[<span class="number">0</span>], argv, environ) &lt; <span class="number">0</span>){</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s: Command not found\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="keyword">int</span> state = bg + <span class="number">1</span>;</span><br><span class="line"><span class="comment">// printf(&quot;bg %d pid %d\n&quot;, bg, pid);</span></span><br><span class="line">sigprocmask(SIG_BLOCK, &amp;mask_all, <span class="literal">NULL</span>);</span><br><span class="line">addjob(jobs, pid, state, cmdline);</span><br><span class="line">sigprocmask(SIG_SETMASK, &amp;prev_mask, <span class="literal">NULL</span>); <span class="comment">// unblock SIGCHLD</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CSAPP/" rel="tag"># CSAPP</a>
+              <a href="/tags/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/" rel="tag"># 课程学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/CSAPP-9-Virtual-Memory/" rel="prev" title="CSAPP(9): Virtual Memory">
+      <i class="fa fa-chevron-left"></i> CSAPP(9): Virtual Memory
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">实验介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E7%AD%94"><span class="nav-number">2.</span> <span class="nav-text">解答</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">整体流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="nav-number">2.2.</span> <span class="nav-text">任务管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="nav-number">2.3.</span> <span class="nav-text">命令执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86"><span class="nav-number">2.4.</span> <span class="nav-text">信号处理</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhikai"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Zhikai</p>
+  <div class="site-description" itemprop="description">Have fun</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhikai</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
